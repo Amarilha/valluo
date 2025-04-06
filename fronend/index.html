@@ -8,45 +8,43 @@
 </head>
 <body class="bg-purple-50 flex flex-col items-center justify-center min-h-screen">
     <div class="bg-white p-6 md:p-8 rounded-lg shadow-md w-full max-w-lg">
+        <div class="flex justify-center mb-6">
+            <img src="https://storage.googleapis.com/a1aa/image/SR9Q6Dcth0e7Aojcx1dNxhtIkCMqKmghb3M6in26xqg.jpg" alt="Logo da Calculadora de Investimentos Online" class="h-16 w-16" width="100" height="100">
+        </div>
         <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Calculadora de Investimentos Online</h1>
         <form>
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2">Tipo de investimento <i class="fas fa-question-circle text-gray-400"></i></label>
-                <div class="flex flex-col space-y-2">
+                <div class="flex space-x-4">
                     <label class="flex items-center">
-                        <input type="radio" name="investmentType" class="form-radio text-purple-600" value="CDB/LC/Títulos públicos/Debêntures">
-                        <span class="ml-2 text-gray-700">CDB/LC/Títulos públicos/Debêntures</span>
+                        <input type="radio" name="investmentType" class="form-radio text-purple-600" value="MEI" checked>
+                        <span class="ml-2 text-gray-700">MEI</span>
                     </label>
                     <label class="flex items-center">
-                        <input type="radio" name="investmentType" class="form-radio text-purple-600" value="LCI/LCA">
-                        <span class="ml-2 text-gray-700">LCI/LCA</span>
+                        <input type="radio" name="investmentType" class="form-radio text-purple-600" value="EME">
+                        <span class="ml-2 text-gray-700">EME</span>
                     </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="investmentType" class="form-radio text-purple-600" value="Tesouro" checked>
-                        <span class="ml-2 text-gray-700">Tesouro</span>
-                    </label>
+                </div>
+            </div>
+            <div id="mei-info" class="mb-4">
+                <p class="text-gray-700 font-semibold">MEI: R$ 80,90</p>
+            </div>
+            <div id="eme-info" class="mb-4 hidden">
+                <label class="block text-gray-700 font-semibold mb-2">Renda Bruta</label>
+                <div class="relative rounded-md shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="text-gray-500 sm:text-sm">R$</span>
+                    </div>
+                    <input type="number" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="Digite a renda bruta">
                 </div>
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 font-semibold mb-2">É PRÉ fixado ou PÓS fixado? <i class="fas fa-question-circle text-gray-400"></i></label>
-                <div class="flex flex-col space-y-2">
-                    <label class="flex items-center">
-                        <input type="radio" name="fixedType" class="form-radio text-purple-600" value="PRE" checked>
-                        <span class="ml-2 text-gray-700">PRÉ</span>
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="fixedType" class="form-radio text-purple-600" value="POS">
-                        <span class="ml-2 text-gray-700">PÓS</span>
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="fixedType" class="form-radio text-purple-600" value="IPCA">
-                        <span class="ml-2 text-gray-700">IPCA</span>
-                    </label>
-                </div>
+                <label class="block text-gray-700 font-semibold mb-2">Setor</label>
+                <input type="text" class="form-input block w-full sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="Digite o setor">
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Investimento inicial</label>
+                    <label class="block text-gray-700 font-semibold mb-2">Custo fixo</label>
                     <div class="relative rounded-md shadow-sm">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="text-gray-500 sm:text-sm">R$</span>
@@ -55,36 +53,12 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Investimento mensal</label>
+                    <label class="block text-gray-700 font-semibold mb-2">Custo variável</label>
                     <div class="relative rounded-md shadow-sm">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="text-gray-500 sm:text-sm">R$</span>
                         </div>
                         <input type="text" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="0,00">
-                    </div>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 gap-4 mb-4">
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Prazo</label>
-                    <div class="flex rounded-md shadow-sm">
-                        <input type="text" class="form-input flex-1 block w-full rounded-none rounded-l-md sm:text-sm sm:leading-5 border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="0">
-                        <select class="form-select rounded-none rounded-r-md border-gray-300 text-gray-700 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
-                            <option>Anos</option>
-                            <option>Meses</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Rentabilidade <i class="fas fa-question-circle text-gray-400"></i></label>
-                    <div class="flex rounded-md shadow-sm">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        </div>
-                        <input type="text" class="form-input flex-1 block w-full pl-10 sm:text-sm sm:leading-5 rounded-none border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="0,00">
-                        <select class="form-select rounded-none rounded-r-md border-gray-300 text-gray-700 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
-                            <option>Anual</option>
-                            <option>Mensal</option>
-                        </select>
                     </div>
                 </div>
             </div>
@@ -93,15 +67,17 @@
                 <button type="reset" class="text-purple-600 font-bold py-2 px-4 rounded-md hover:text-purple-700 transition duration-150 ease-in-out">LIMPAR</button>
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 font-semibold mb-2">Importar arquivo</label>
-                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                <label class="block text-gray-700 font-semibold mb-2">Importar arquivo (Plano PRO)</label>
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center relative">
                     <i class="fas fa-file-upload fa-3x text-gray-400 mb-4"></i>
                     <p class="text-gray-600 mb-2">Arraste e solte o arquivo aqui</p>
                     <p class="text-gray-500 text-sm">ou</p>
-                    <input type="file" class="form-input block w-full text-gray-700 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 mt-2">
+                    <input type="file" class="form-input block w-full text-gray-700 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 mt-2" disabled>
+                    <div class="absolute top-0 right-0 bg-purple-600 text-white text-xs font-bold py-1 px-2 rounded-bl-lg">PRO</div>
                 </div>
             </div>
             <p class="text-center text-gray-500 text-sm mt-4">Assista ao anúncio e veja os resultados.</p>
+            <div id="result" class="text-center text-gray-700 font-semibold mt-4"></div>
         </form>
     </div>
     <footer class="mt-8 w-full">
@@ -112,5 +88,23 @@
             <a href="#" class="text-gray-500 hover:text-purple-600"><i class="fab fa-linkedin fa-2x"></i></a>
         </div>
     </footer>
+    <script>
+        document.querySelectorAll('input[name="investmentType"]').forEach((elem) => {
+            elem.addEventListener("change", function(event) {
+                var item = event.target.value;
+                if (item === "MEI") {
+                    document.getElementById("mei-info").classList.remove("hidden");
+                    document.getElementById("eme-info").classList.add("hidden");
+                } else if (item === "EME") {
+                    document.getElementById("mei-info").classList.add("hidden");
+                    document.getElementById("eme-info").classList.remove("hidden");
+                }
+            });
+        });
+
+        document.querySelector('button[type="button"]').addEventListener('click', function() {
+            document.getElementById('result').innerText = 'Resultado: R$ 0,00';
+        });
+    </script>
 </body>
 </html>
