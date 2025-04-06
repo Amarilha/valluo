@@ -10,7 +10,10 @@
     <div class="bg-white p-6 md:p-8 rounded-lg shadow-md w-full max-w-lg">
         <div class="flex justify-center mb-6">
             <img src="frontend/css/logo02.png" alt="Logo da Calculadora de Investimentos Online" width="100" height="100">
+<<<<<<< HEAD
+=======
 
+>>>>>>> 89c5adfa8aadabb2285717ef87017f8f9e1625e4
         </div>
         <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Calculadora de Precificação</h1>
         <form>
@@ -36,7 +39,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span class="text-gray-500 sm:text-sm">R$</span>
                     </div>
-                    <input type="number" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="Digite a renda bruta">
+                    <input type="number" id="grossIncome" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="Digite a renda bruta">
                 </div>
             </div>
             <div class="mb-4">
@@ -50,7 +53,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="text-gray-500 sm:text-sm">R$</span>
                         </div>
-                        <input type="text" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="0,00">
+                        <input type="text" id="fixedCost" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="0,00">
                     </div>
                 </div>
                 <div>
@@ -59,12 +62,12 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="text-gray-500 sm:text-sm">R$</span>
                         </div>
-                        <input type="text" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="0,00">
+                        <input type="text" id="variableCost" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="0,00">
                     </div>
                 </div>
             </div>
             <div class="flex items-center justify-between mb-4">
-                <button type="button" class="bg-gradient-to-r from-purple-500 to-purple-700 text-white font-bold py-2 px-4 rounded-md shadow-lg hover:from-purple-600 hover:to-purple-800 transition duration-150 ease-in-out">CALCULAR</button>
+                <button type="button" id="calculateBtn" class="bg-gradient-to-r from-purple-500 to-purple-700 text-white font-bold py-2 px-4 rounded-md shadow-lg hover:from-purple-600 hover:to-purple-800 transition duration-150 ease-in-out">CALCULAR</button>
                 <button type="reset" class="text-purple-600 font-bold py-2 px-4 rounded-md hover:text-purple-700 transition duration-150 ease-in-out">LIMPAR</button>
             </div>
             <div class="mb-4">
@@ -103,8 +106,30 @@
             });
         });
 
-        document.querySelector('button[type="button"]').addEventListener('click', function() {
-            document.getElementById('result').innerText = 'Resultado: R$ 0,00';
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            // Obter os valores dos campos
+            const fixedCost = parseFloat(document.getElementById('fixedCost').value.replace(',', '.')) || 0;
+            const variableCost = parseFloat(document.getElementById('variableCost').value.replace(',', '.')) || 0;
+            
+            // Calcular o total
+            const total = fixedCost + variableCost;
+            
+            // Formatando para exibir com 2 casas decimais e vírgula como separador decimal
+            const formattedTotal = total.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+            
+            // Exibir o resultado em um alerta
+            alert(`O valor total é: ${formattedTotal}`);
+            
+            // Também pode manter a exibição na div de resultados se desejar
+            document.getElementById('result').innerHTML = `Total: ${formattedTotal}`;
+        });
+
+        // Limpar o resultado quando o formulário for resetado
+        document.querySelector('form').addEventListener('reset', function() {
+            document.getElementById('result').innerText = '';
         });
     </script>
 </body>
