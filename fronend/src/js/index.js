@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Configurações da API (para frontend, considere usar um backend proxy)
 
-const DEEPSEEK_API_KEY = "sk-e1741a83372748cca3e0b04f737d2dca"; // Substitua pela sua chave
+const DEEPSEEK_API_KEY = ""; // Substitua pela sua chave
 const DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions";
 
 // Função para enviar mensagens à API do DeepSeek
