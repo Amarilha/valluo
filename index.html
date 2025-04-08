@@ -4,17 +4,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Precificação</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body class="bg-purple-50 flex flex-col items-center justify-center min-h-screen">
     <div class="bg-white p-6 md:p-8 rounded-lg shadow-md w-full max-w-lg">
         <div class="flex justify-center mb-6">
+
             <img src="https://amarilha.github.io/valluo/fronend/public/logo01.svg" alt="Logo da Calculadora de Investimentos Online" width="100" height="100">
         </div>
         <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Calculadora de Precificação</h1>
         <form>
             <div class="mb-4">
-                <label class="block text-gray-700 font-semibold mb-2">Tipo de investimento <i class="fas fa-question-circle text-gray-400"></i></label>
+                <label class="block text-gray-700 font-semibold mb-2">Tipo de Empresa <i class="fas fa-question-circle text-gray-400"></i></label>
                 <div class="flex space-x-4">
                     <label class="flex items-center">
                         <input type="radio" name="investmentType" class="form-radio text-purple-600" value="MEI" checked>
@@ -82,51 +84,12 @@
     </div>
     <footer class="mt-8 w-full">
         <div class="flex justify-center space-x-4 mb-4">
-            <a href="#" class="text-gray-500 hover:text-purple-600"><i class="fab fa-facebook fa-2x"></i></a>
-            <a href="#" class="text-gray-500 hover:text-purple-600"><i class="fab fa-twitter fa-2x"></i></a>
-            <a href="#" class="text-gray-500 hover:text-purple-600"><i class="fab fa-instagram fa-2x"></i></a>
-            <a href="#" class="text-gray-500 hover:text-purple-600"><i class="fab fa-linkedin fa-2x"></i></a>
+            <a href="#" class="text-gray-500 hover:text-purple-600" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="#" class="text-gray-500 hover:text-purple-600" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-square-x-twitter fa-2x"></i></a>
+            <a href="https://www.instagram.com/valluo.ofc" class="text-gray-500 hover:text-purple-600" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="https://www.linkedin.com/company/valluo/" class="text-gray-500 hover:text-purple-600" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin fa-2x"></i></a>
         </div>
     </footer>
-    <script>
-        document.querySelectorAll('input[name="investmentType"]').forEach((elem) => {
-            elem.addEventListener("change", function(event) {
-                var item = event.target.value;
-                if (item === "MEI") {
-                    document.getElementById("mei-info").classList.remove("hidden");
-                    document.getElementById("eme-info").classList.add("hidden");
-                } else if (item === "EME") {
-                    document.getElementById("mei-info").classList.add("hidden");
-                    document.getElementById("eme-info").classList.remove("hidden");
-                }
-            });
-        });
-
-        document.getElementById('calculateBtn').addEventListener('click', function() {
-            // Obter os valores dos campos
-            const fixedCost = parseFloat(document.getElementById('fixedCost').value.replace(',', '.')) || 0;
-            const variableCost = parseFloat(document.getElementById('variableCost').value.replace(',', '.')) || 0;
-            
-            // Calcular o total
-            const total = fixedCost + variableCost;
-            
-            // Formatando para exibir com 2 casas decimais e vírgula como separador decimal
-            const formattedTotal = total.toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            });
-            
-            // Exibir o resultado em um alerta
-            alert(`O valor total é: ${formattedTotal}`);
-            
-            // Também pode manter a exibição na div de resultados se desejar
-            document.getElementById('result').innerHTML = `Total: ${formattedTotal}`;
-        });
-
-        // Limpar o resultado quando o formulário for resetado
-        document.querySelector('form').addEventListener('reset', function() {
-            document.getElementById('result').innerText = '';
-        });
-    </script>
+    <script type="module" src="/fronend/src/js/index.js"></script>
 </body>
 </html>
