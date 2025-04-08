@@ -1,38 +1,31 @@
-document.querySelectorAll('input[name="investmentType"]').forEach((elem) => {
-    elem.addEventListener("change", function(event) {
-        var item = event.target.value;
-        if (item === "MEI") {
-            document.getElementById("mei-info").classList.remove("hidden");
-            document.getElementById("eme-info").classList.add("hidden");
-        } else if (item === "EME") {
-            document.getElementById("mei-info").classList.add("hidden");
-            document.getElementById("eme-info").classList.remove("hidden");
+document.addEventListener("DOMContentLoaded", function () {
+    // Função para formatar valor em moeda (ex: 1.234,56)
+    function formatarMoeda(input) {
+        let valor = input.value.replace(/\D/g, "");
+        valor = (parseFloat(valor) / 100).toFixed(2);
+        valor = valor.replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        input.value = valor;
+    }
+
+    // Função para remover uma linha de um formulário
+    function removerLinha(botao) {
+        const linha = botao.closest('.flex');
+        if (linha) {
+            linha.remove();
         }
-    });
-});
+    }
 
-document.getElementById('calculateBtn').addEventListener('click', function() {
-    // Obter os valores dos campos
-    const fixedCost = parseFloat(document.getElementById('fixedCost').value.replace(',', '.')) || 0;
-    const variableCost = parseFloat(document.getElementById('variableCost').value.replace(',', '.')) || 0;
-    
-    // Calcular o total
-    const total = fixedCost + variableCost;
-    
-    // Formatando para exibir com 2 casas decimais e vírgula como separador decimal
-    const formattedTotal = total.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
+    // Exemplo: aplicar a formatação de moeda nos inputs com classe "moeda"
+    document.querySelectorAll('.moeda').forEach(input => {
+        input.addEventListener('input', function () {
+            formatarMoeda(input);
+        });
     });
-    
-    // Exibir o resultado em um alerta
-    alert(`O valor total é: ${formattedTotal}`);
-    
-    // Também pode manter a exibição na div de resultados se desejar
-    document.getElementById('result').innerHTML = `Total: ${formattedTotal}`;
-});
 
-// Limpar o resultado quando o formulário for resetado
-document.querySelector('form').addEventListener('reset', function() {
-    document.getElementById('result').innerText = '';
+    // Exemplo: aplicar função de remover em botões com classe "remover-linha"
+    document.querySelectorAll('.remover-linha').forEach(botao => {
+        botao.addEventListener('click', function () {
+            removerLinha(botao);
+        });
+    });
 });
