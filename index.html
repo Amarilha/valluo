@@ -20,23 +20,23 @@
                 <label class="block text-gray-700 font-semibold mb-2">Tipo de Empresa <i class="fas fa-question-circle text-gray-400"></i></label>
                 <div class="flex space-x-4">
                     <label class="flex items-center">
-                        <input type="radio" name="investmentType" class="form-radio text-purple-600" value="MEI" checked>
+                        <input type="radio" name="impostoType" class="form-radio text-purple-600" value="MEI"  onchange="toggleImposto()">
                         <span class="ml-2 text-gray-700">MEI</span>
                     </label>
                     <label class="flex items-center">
-                        <input type="radio" name="investmentType" class="form-radio text-purple-600" value="EME">
+                        <input type="radio" name="impostoType"  class="form-radio text-purple-600" value="ME" onchange="toggleImposto()">
                         <span class="ml-2 text-gray-700">ME</span>
                     </label>
                 </div>
             </div>
             
             <!-- MEI Info -->
-            <div id="mei-info" class="mb-4">
+            <div id="meiInfo" class="mb-4">
                 <p class="text-gray-700 font-semibold">MEI: R$ 80,90</p>
             </div>
             
             <!-- Renda Bruta (ME) -->
-            <div id="eme-info" class="mb-4 hidden">
+            <div id="meInfo" class="mb-4 hidden">
                 <label class="block text-gray-700 font-semibold mb-2">Renda Bruta</label>
                 <div class="relative rounded-md shadow-sm">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -51,18 +51,19 @@
                 <label class="block text-gray-700 font-semibold mb-2">Serviço</label>
                 <select name="serviceType" class="form-select block w-full sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
                     <option value="geral">Geral</option>
-                    <option value="dev">Dev</option>
+                    <option value="dev">Desevolvedor de SW</option>
                 </select>
             </div>
             
             <!-- Geral Fields -->
             <div id="geral-fields" class="mb-4">
+                
                 <!-- Custo Fixo Mensal -->
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">Custos Fixos Mensais</label>
-                    
+                    <!--Aluguel-->
                     <div class="flex space-x-2 mb-2">
-                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Custo Fixo Mensal"> 
+                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Aluguel"> 
                         <div class="relative rounded-md shadow-sm w-1/3">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">R$</span>
@@ -73,31 +74,55 @@
                         </div>
                         <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
-                    
-                    <button type="button" id="custos-fixos-container" class="mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition">+</button>
-                </div>
-                
-                <!-- Horas trabalhadas por mês -->
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2">Horas trabalhadas por mês</label>
+                    <!--Equipamentos-->
                     <div class="flex space-x-2 mb-2">
-                        <input 
-                            type="number" 
-                            min="1"
-                            oninput="this.value = this.value < 0 ? 0 : this.value"
-                            class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" 
-                            placeholder="Valor por hora desejado"> 
-                       
+                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Equipamentos"> 
+                        <div class="relative rounded-md shadow-sm w-1/3">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">R$</span>
+                            </div>
+                            <input type="text" oninput="formatarMoeda(this)"
+                                   placeholder="0,00"
+                                   class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
+                        </div>
+                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
-                    
-                </div>
-                
+                    <!--Software-->
+                    <div class="flex space-x-2 mb-2">
+                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Software"> 
+                        <div class="relative rounded-md shadow-sm w-1/3">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">R$</span>
+                            </div>
+                            <input type="text" oninput="formatarMoeda(this)"
+                                   placeholder="0,00"
+                                   class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
+                        </div>
+                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
+                    </div>
+                    <!--Outros gastos fixos-->
+                    <div class="flex space-x-2 mb-2">
+                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Outros gastos fixos"> 
+                        <div class="relative rounded-md shadow-sm w-1/3">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">R$</span>
+                            </div>
+                            <input type="text" oninput="formatarMoeda(this)"
+                                   placeholder="0,00"
+                                   class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
+                        </div>
+                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
+                    </div>
+                    <!--Adicionar-->
+                    <div id="custos-fixos-container"></div>
+                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="custos-fixos-container" data-placeholder="Novo Custo Fixo">+</button></div>
+                         
                 <!-- Custo Variável por serviço -->
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">Custos Variáveis</label>
-                    
+                    <!--Gasolina/transporte -->
                     <div class="flex space-x-2 mb-2">
-                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Custo Variável por serviço"> 
+                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Gasolina/transporte"> 
                         <div class="relative rounded-md shadow-sm w-1/3">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">R$</span>
@@ -108,48 +133,149 @@
                         </div>
                         <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
-                    
-                    <button type="button" id="custos-fixos-container" class="mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition">+</button>
-                </div>
-                
-                <!-- Tempo necessário para o serviço -->
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2">Tempo necessário para o serviço (horas)</label>
-                    
+                    <!--materiais -->
                     <div class="flex space-x-2 mb-2">
-                        <input 
-                            type="number" 
-                            min="1"
-                            oninput="this.value = this.value < 0 ? 0 : this.value"
-                            class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" 
-                            placeholder="Tempo necessário para o serviço (horas)"> 
+                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Materiais"> 
+                        <div class="relative rounded-md shadow-sm w-1/3">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">R$</span>
+                            </div>
+                            <input type="text" oninput="formatarMoeda(this)"
+                                   placeholder="0,00"
+                                   class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
+                        </div>
+                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
-
+                    <!--Outros gastos Variáveis-->
+                    <div class="flex space-x-2 mb-2">
+                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Outros gastos Variáveis "> 
+                        <div class="relative rounded-md shadow-sm w-1/3">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">R$</span>
+                            </div>
+                            <input type="text" oninput="formatarMoeda(this)"
+                                   placeholder="0,00"
+                                   class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
+                        </div>
+                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
+                    </div>
+                    <div id="custos-variaveis-container"></div>
+                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="custos-variaveis-container" data-placeholder="Novo Custo Variável">+</button>
                 </div>
-                
+
+                <!-- Impostos e taxas (parte corrigida) -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Impostos e taxas</label>
+                    <div class="flex space-x-2 mb-2">
+                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Maquininha">
+                        <div class="relative rounded-md shadow-sm w-1/3">
+                            <input type="number"
+                                min="1" 
+                                oninput="this.value = this.value < 0 ? 0 : this.value"
+                                class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">%</span>
+                            </div>
+                        </div>
+                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
+                    </div>              
+                    <div id="impostos-container"></div>
+                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="impostos-container" data-placeholder="Novo Imposto" data-ispercentage="true">+</button>
+                </div>
+       
                 <!-- Remuneração por hora -->
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2">Remuneração por Hora/Dia</label>
+                    <label class="block text-gray-700 font-semibold mb-2">Remuneração por Hora</label>
+                    <!--radio-->
+                    <div class="mb-3">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="remunerationType" value="direct" checked class="form-radio text-purple-500" onchange="toggleRemunerationInput()">
+                            <span class="ml-2">Sei o meu valor por hora</span>
+                        </label>
+                        <label class="inline-flex items-center ml-6">
+                            <input type="radio" name="remunerationType" value="calculate" class="form-radio text-purple-500" onchange="toggleRemunerationInput()">
+                            <span class="ml-2">não sei o meu valor por hora</span>
+                        </label>
+                    </div>
+                    
+                    <!-- sei o meu valor por hora-->
+                    <div id="directInput" class="flex space-x-2 mb-2">
+                        <div class="relative rounded-md shadow-sm w-1/2">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">R$</span>
+                            </div>
+                            <input 
+                                type="number" 
+                                min="1"
+                                oninput="this.value = this.value < 0 ? 0 : this.value"
+                                class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" 
+                                placeholder="Valor por hora desejado">
+                        </div>
+                        <div class="relative rounded-md shadow-sm w-1/3">
+                            <label name="serviceType" class="form-select block w-full sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">Horas</label>
+                        </div>
+                    </div>
+                
+                    <!--não sei o meu valor por hora -->
+                    <div id="calculateSection" style="display: none;">
+                        <!--Remuneração -->
+                        <div class="flex space-x-2 mb-2">
+                            <label class="form-input block w-1/2 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">Remuneração Desejada por Mês</label>
+                            <div class="relative rounded-md shadow-sm w-1/3">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 sm:text-sm">R$</span>
+                                </div>
+                                <input type="text" oninput="formatarMoeda(this)"
+                                       placeholder="0,00"
+                                       class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
+                            </div>
+                        </div>
+                        
+                        <!--Dias úteis no Mês -->
+                        <div class="flex space-x-2 mb-2">
+                            <label class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">Dias úteis no Mês</label>
+                            <input type="number" 
+                                   min="1"
+                                   max="31"
+                                   placeholder="0"
+                                   class="form-input block w-50 pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
+                        </div>
+                        
+                        <!--Horas produtiva no dia-->
+                        <div class="flex space-x-2 mb-2">
+                            <label class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">Horas produtivas no dia</label>
+                            <input type="number" 
+                                   min="1"
+                                   max="24"
+                                   placeholder="0"
+                                   class="form-input block w-50 pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
+                        </div>
+                    </div>
+                </div>                                
+                
+
+                <!-- Valor do Serviço/Projeto -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">horas estimada do Serviço/Projeto</label>
                     
                     <div class="flex space-x-2 mb-2">
                         <input 
                             type="number" 
                             min="1"
                             oninput="this.value = this.value < 0 ? 0 : this.value"
-                            class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" 
-                            placeholder="Valor por hora desejado"> 
+                            class="form-input block w-1/2 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" 
+                            placeholder="horas estimada"> 
                         <div class="relative rounded-md shadow-sm w-1/3">
-                            <select name="serviceType" class="form-select block w-full sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
-                                <option value="geral">Horas</option>
-                                <option value="dev">Dia</option>
-                            </select>
+                            <label name="serviceType" class="form-select block w-full sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">Horas</label>
                         </div>
                     </div>
                     
                     
                 </div>
+
             </div>
             
+
             <!-- Dev Fields -->
             <div id="dev-fields" class="mb-4 hidden">
                 <div class="mb-4">
@@ -220,7 +346,8 @@
                         <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
                     
-                    <button type="button" id="custos-fixos-container" class="mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition">+</button>
+                    <div id="custos-fixos-container"></div>
+                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="custos-fixos-container" data-placeholder="Novo Custo Fixo">+</button>
                 </div>
                 <!--Horas-->
                 <div class="mb-4">
@@ -251,7 +378,7 @@
                     </div>
                 </div>
                 <!--Projeto Especifico-->
-                <div class="mb-4">
+                <div class="mb-4" id="dev-projeto-container">
                     <label class="block text-gray-700 font-semibold mb-2">Projeto Específico</label>
                     
                     <div class="flex space-x-2 mb-2">
@@ -297,9 +424,8 @@
                     <div class="flex space-x-2 mb-2">
                         <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Margem de Segurança"> 
                         <div class="relative rounded-md shadow-sm w-1/3">
-                            <input type="number"
-                                   placeholder="0"
-                                   min="1"
+                            <input type="number" 
+                            min="1"
                                    oninput="this.value = this.value < 0 ? 0 : this.value"
                                    class="form-input block w-full sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -308,9 +434,12 @@
                         </div>
                         <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
-                    <button type="button" id="custos-fixos-container" class="mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition">+</button>
+                    <div id="dev-projeto-container"></div>
+                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="dev-projeto-container" data-placeholder="Novo Item" data-ispercentage="false">+</button>
                 </div>
             </div>
+
+            <!--Crochê-->
             
             <div class="flex items-center justify-between mb-4">
                 <button type="button" id="calculateBtn" class="bg-gradient-to-r from-purple-500 to-purple-700 text-white font-bold py-2 px-4 rounded-md shadow-lg hover:from-purple-600 hover:to-purple-800 transition duration-150 ease-in-out">CALCULAR</button>
