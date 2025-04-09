@@ -8,27 +8,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body class="bg-purple-50 flex flex-col items-center justify-center min-h-screen">
+
     <div class="bg-white p-6 md:p-8 rounded-lg shadow-md w-full max-w-lg">
         <div class="flex justify-center mb-6">
-
-            <img src="https://amarilha.github.io/valluo/fronend/public/logo01.svg" alt="Logo da Calculadora de Investimentos Online" width="100" height="100">
+            <img src="https://amarilha.github.io/valluo/fronend/public/logo01.svg" alt="Logo valluo" width="100" height="100">
         </div>
         <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Calculadora de Precificação</h1>
         <form>
+            <!-- Tipo de Empresa -->
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2">Tipo de Empresa <i class="fas fa-question-circle text-gray-400"></i></label>
-                <div class="flex space-x-4">
+                <div class="flex space-x-4" >
                     <label class="flex items-center">
-                        <input type="radio" name="impostoType" class="form-radio text-purple-600" value="MEI"  onchange="toggleImposto()">
-                        <span class="ml-2 text-gray-700">MEI</span>
+                        <span class="ml-2 text-gray-700">MEI</span><input type="radio" name="impostoType" class="form-radio text-purple-600" value="MEI" checked >
+                        
                     </label>
                     <label class="flex items-center">
-                        <input type="radio" name="impostoType"  class="form-radio text-purple-600" value="ME" onchange="toggleImposto()">
+                        <input type="radio" name="impostoType"  class="form-radio text-purple-600" value="ME">
                         <span class="ml-2 text-gray-700">ME</span>
                     </label>
                 </div>
             </div>
-<<<<<<< HEAD
             
             <!-- MEI Info -->
             <div id="meiInfo" class="mb-4">
@@ -37,22 +37,17 @@
             
             <!-- Renda Bruta (ME) -->
             <div id="meInfo" class="mb-4 hidden">
-=======
-            <div id="mei-info" class="mb-4">
-                <p class="text-gray-700 font-semibold">MEI: R$ 80,90</p>
-            </div>
-            <div id="eme-info" class="mb-4 hidden">
->>>>>>> refs/remotes/origin/ia
                 <label class="block text-gray-700 font-semibold mb-2">Renda Bruta</label>
                 <div class="relative rounded-md shadow-sm">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span class="text-gray-500 sm:text-sm">R$</span>
                     </div>
-                    <input type="number" id="grossIncome" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="Digite a renda bruta">
+                    <input type="number"  min="1" oninput="this.value = this.value < 0 ? 0 : this.value" id="grossIncome" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="Digite a renda bruta">
                 </div>
             </div>
+            
+            <!-- Serviço -->
             <div class="mb-4">
-<<<<<<< HEAD
                 <label class="block text-gray-700 font-semibold mb-2">Serviço</label>
                 <select name="serviceType" class="form-select block w-full sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
                     <option value="geral">Geral</option>
@@ -76,21 +71,9 @@
                             <input type="text" oninput="formatarMoeda(this)"
                                    placeholder="0,00"
                                    class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
-=======
-                <label class="block text-gray-700 font-semibold mb-2">Setor</label>
-                <input type="text" class="form-input block w-full sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="Digite o setor">
-            </div>
-            <div class="grid grid-cols-1 gap-4 mb-4">
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Custo fixo</label>
-                    <div class="relative rounded-md shadow-sm">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span class="text-gray-500 sm:text-sm">R$</span>
->>>>>>> refs/remotes/origin/ia
                         </div>
-                        <input type="text" id="fixedCost" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="0,00">
+                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
-<<<<<<< HEAD
                     <!--Equipamentos-->
                     <div class="flex space-x-2 mb-2">
                         <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Equipamentos"> 
@@ -132,7 +115,8 @@
                     </div>
                     <!--Adicionar-->
                     <div id="custos-fixos-container"></div>
-                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="custos-fixos-container" data-placeholder="Novo Custo Fixo">+</button></div>
+                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="custos-fixos-container" data-placeholder="Novo Custo Fixo">+</button>
+                 </div>
                          
                 <!-- Custo Variável por serviço -->
                 <div class="mb-4">
@@ -147,18 +131,9 @@
                             <input type="text" oninput="formatarMoeda(this)"
                                    placeholder="0,00"
                                    class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
-=======
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Custo variável</label>
-                    <div class="relative rounded-md shadow-sm">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span class="text-gray-500 sm:text-sm">R$</span>
->>>>>>> refs/remotes/origin/ia
                         </div>
-                        <input type="text" id="variableCost" class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="0,00">
+                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
-<<<<<<< HEAD
                     <!--materiais -->
                     <div class="flex space-x-2 mb-2">
                         <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Materiais"> 
@@ -185,26 +160,28 @@
                         </div>
                         <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
+                    <!--Adicionar-->
                     <div id="custos-variaveis-container"></div>
                     <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="custos-variaveis-container" data-placeholder="Novo Custo Variável">+</button>
                 </div>
 
-                <!-- Impostos e taxas (parte corrigida) -->
+                <!-- Impostos e taxas -->
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">Impostos e taxas</label>
                     <div class="flex space-x-2 mb-2">
                         <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Maquininha">
                         <div class="relative rounded-md shadow-sm w-1/3">
-                            <input type="number"
-                                min="1" 
-                                oninput="this.value = this.value < 0 ? 0 : this.value"
-                                class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
-                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <div class="absolute inset-y-0 left-8 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">%</span>
                             </div>
+                                <input type="number"
+                                        min="1" 
+                                        oninput="this.value = this.value < 0 ? 0 : this.value" 
+                                        id="grossIncome" 
+                                        class="form-input block w-10" >
                         </div>
-                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
-                    </div>              
+                                <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>        
+                    </div>
                     <div id="impostos-container"></div>
                     <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="impostos-container" data-placeholder="Novo Imposto" data-ispercentage="true">+</button>
                 </div>
@@ -297,12 +274,9 @@
                     </div>
                     
                     
-=======
->>>>>>> refs/remotes/origin/ia
                 </div>
 
             </div>
-<<<<<<< HEAD
             
 
             <!-- Dev Fields -->
@@ -372,12 +346,7 @@
                                    placeholder="0,00"
                                    class="form-input block w-full pl-10 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
                         </div>
-                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
-                    
-                    <div id="custos-fixos-container"></div>
-                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="custos-fixos-container" data-placeholder="Novo Custo Fixo">+</button>
-                </div>
                 <!--Horas-->
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">Horas Produtivas</label>
@@ -407,7 +376,7 @@
                     </div>
                 </div>
                 <!--Projeto Especifico-->
-                <div class="mb-4" id="dev-projeto-container">
+                <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">Projeto Específico</label>
                     
                     <div class="flex space-x-2 mb-2">
@@ -419,9 +388,7 @@
                                 placeholder="0"
                                 class="form-input block w-full sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50">
                         </div>
-                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
-                    </div>
-                    
+                        
                     <div class="flex space-x-2 mb-2">
                         <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Custos Variáveis"> 
                         <div class="relative rounded-md shadow-sm w-1/3">
@@ -463,19 +430,17 @@
                         </div>
                         <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
-                    <div id="dev-projeto-container"></div>
-                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="dev-projeto-container" data-placeholder="Novo Item" data-ispercentage="false">+</button>
+                    
                 </div>
             </div>
 
             <!--Crochê-->
             
-=======
->>>>>>> refs/remotes/origin/ia
             <div class="flex items-center justify-between mb-4">
                 <button type="button" id="calculateBtn" class="bg-gradient-to-r from-purple-500 to-purple-700 text-white font-bold py-2 px-4 rounded-md shadow-lg hover:from-purple-600 hover:to-purple-800 transition duration-150 ease-in-out">CALCULAR</button>
                 <button type="reset" class="text-purple-600 font-bold py-2 px-4 rounded-md hover:text-purple-700 transition duration-150 ease-in-out">LIMPAR</button>
             </div>
+            
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2">Importar arquivo (Plano PRO)</label>
                 <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center relative">
@@ -486,10 +451,12 @@
                     <div class="absolute top-0 right-0 bg-purple-600 text-white text-xs font-bold py-1 px-2 rounded-bl-lg">PRO</div>
                 </div>
             </div>
+            
             <p class="text-center text-gray-500 text-sm mt-4">Assista ao anúncio e veja os resultados.</p>
             <div id="result" class="text-center text-gray-700 font-semibold mt-4"></div>
         </form>
     </div>
+    
     <footer class="mt-8 w-full">
         <div class="flex justify-center space-x-4 mb-4">
             <a href="#" class="text-gray-500 hover:text-purple-600" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook fa-2x"></i></a>
@@ -498,6 +465,7 @@
             <a href="https://www.linkedin.com/company/valluo/" class="text-gray-500 hover:text-purple-600" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin fa-2x"></i></a>
         </div>
     </footer>
-    <script type="module" src="/fronend/src/js/index.js"></script>
+    
+    <script src="/fronend/src/js/index.js" defer></script>
 </body>
 </html>
