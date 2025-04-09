@@ -169,21 +169,16 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">Impostos e taxas</label>
                     <div class="flex space-x-2 mb-2">
-                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" value="Maquininha">
+                        <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="Impostos/Taxa" id="nome-row-0">
                         <div class="relative rounded-md shadow-sm w-1/3">
-                            <div class="absolute inset-y-0 left-8 pl-3 flex items-center pointer-events-none">
-                                <span class="text-gray-500 sm:text-sm">%</span>
-                            </div>
-                                <input type="number"
-                                        min="1" 
-                                        oninput="this.value = this.value < 0 ? 0 : this.value" 
-                                        id="grossIncome" 
-                                        class="form-input block w-10" >
+                            
+                            <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="form-input block w-full  sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" id="valor-row-0">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none"><span class="text-gray-500 sm:text-sm">%</span></div>
                         </div>
-                                <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>        
+                        <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
                     </div>
                     <div id="impostos-container"></div>
-                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="impostos-container" data-placeholder="Novo Imposto" data-ispercentage="true">+</button>
+                    <button type="button" class="add-custo-btn mb-4 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-container="impostos-container" data-placeholder="Novo Impostos/Taxa" data-ispercentage="true">+</button>
                 </div>
        
                 <!-- Remuneração por hora -->
