@@ -127,70 +127,70 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.getElementById('calculateBtn').addEventListener('click', function() {
-    // Captura os valores dos campos
-    const custosFixos = [];
-    const custosVariaveis = [];
-    const impostos = [];
+    // Captura os valores dos campos separadamente
+    const custosFixos = {};
+    const custosVariaveis = {};
+    const taxas = {};
     
-    // Custo Fixo Mensal
-    const custoFixoInputs = document.querySelectorAll('#geral-fields input[type="text"]');
-    custoFixoInputs.forEach(input => {
-        const valorInput = input.nextElementSibling; // Captura o próximo elemento (o campo de valor)
-        console.log('Custo Fixo Input:', input.value); // Log do nome do custo fixo
-        console.log('Valor Input:', valorInput); // Log do elemento de valor
-        if (valorInput) {
-            const valor = valorInput.value; // Captura o valor do campo de custo
-            console.log('Valor:', valor); // Log do valor
-            if (valor) {
-                custosFixos.push({ nome: input.value, valor: valor });
-            }
+    // Captura Custos Fixos (CF)
+    document.querySelectorAll('#CF input[type="text"]').forEach(input => {
+        const valorInput = input.nextElementSibling?.querySelector('input');
+        if (valorInput && input.value && valorInput.value) {
+            custosFixos[input.value] = valorInput.value;
         }
     });
 
-    // Custo Variável por Serviço
-    const custoVariavelInputs = document.querySelectorAll('#custos-variaveis-container input[type="text"]');
-    custoVariavelInputs.forEach(input => {
-        const valorInput = input.nextElementSibling; // Captura o próximo elemento (o campo de valor)
-        console.log('Custo Variável Input:', input.value); // Log do nome do custo variável
-        console.log('Valor Input:', valorInput); // Log do elemento de valor
-        if (valorInput) {
-            const valor = valorInput.value; // Captura o valor do campo de custo
-            console.log('Valor:', valor); // Log do valor
-            if (valor) {
-                custosVariaveis.push({ nome: input.value, valor: valor });
-            }
+    // Captura Custos Variáveis (CV)
+    document.querySelectorAll('#CV input[type="text"]').forEach(input => {
+        const valorInput = input.nextElementSibling?.querySelector('input');
+        if (valorInput && input.value && valorInput.value) {
+            custosVariaveis[input.value] = valorInput.value;
         }
     });
 
-    // Impostos e Taxas
-    const impostoInputs = document.querySelectorAll('#impostos-container input[type="text"]');
-    impostoInputs.forEach(input => {
-        const valorInput = input.nextElementSibling; // Captura o próximo elemento (o campo de valor)
-        console.log('Imposto Input:', input.value); // Log do nome do imposto
-        console.log('Valor Input:', valorInput); // Log do elemento de valor
-        if (valorInput) {
-            const valor = valorInput.value; // Captura o valor do campo de imposto
-            console.log('Valor:', valor); // Log do valor
-            if (valor) {
-                impostos.push({ nome: input.value, valor: valor });
-            }
+    // Captura Taxas
+    document.querySelectorAll('#taxa input[type="text"]').forEach(input => {
+        const valorInput = input.nextElementSibling?.querySelector('input');
+        if (valorInput && input.value && valorInput.value) {
+            taxas[input.value] = valorInput.value;
         }
     });
 
-    // Remuneração por Hora
-    const remuneracaoPorHora = document.querySelector('input[name="remunerationType"]:checked').value === 'direct'
-        ? document.querySelector('#directInput input[type="number"]').value
-        : null; // Aqui você pode adicionar lógica para calcular a remuneração se o usuário não souber
+    // Captura PH (Preço por Hora)
+    let precoHora = null;
+    if (document.querySelector('input[name="remunerationType"]:checked').value === 'direct') {
+        precoHora = document.querySelector('#directInput input[type="number"]')?.value;
+    } else {
+        // Captura valores do calculateSection
+        const remuneracaoMes = document.querySelector('#calculateSection input[placeholder="0,00"]')?.value;
+        const diasUteis = document.querySelector('#calculateSection input[placeholder="0"][max="31"]')?.value;
+        const horasDia = document.querySelector('#calculateSection input[placeholder="0"][max="24"]')?.value;
+        
+        if (remuneracaoMes && diasUteis && horasDia) {
+            // Converte remuneracaoMes de string "1.234,56" para número
+            const remuneracaoNumero = parseFloat(remuneracaoMes.replace(/\./g, '').replace(',', '.'));
+            // Calcula o preço por hora
+            precoHora = (remuneracaoNumero / (diasUteis * horasDia)).toFixed(2);
+        }
+    }
 
-    // Valor do Serviço/Projeto
-    const valorServico = document.querySelector('#geral-fields input[type="number"]').value; // Captura o valor do serviço
+    // Captura Valor do Projeto
+    const valorProjeto = document.querySelector('#valor-projeto input[type="number"]')?.value;
 
-    // Exibe os dados capturados
-    console.log('Custos Fixos:', custosFixos);
-    console.log('Custos Variáveis:', custosVariaveis);
-    console.log('Impostos e Taxas:', impostos);
-    console.log('Remuneração por Hora:', remuneracaoPorHora);
-    console.log('Valor do Serviço/Projeto:', valorServico);
+    // Mostra cada valor separadamente no console
+    console.log('=== Valores Separados ===');
+    console.log('Custos Fixos (CF):', custosFixos);
+    console.log('Custos Variáveis (CV):', custosVariaveis);
+    console.log('Taxas:', taxas);
+    console.log('Preço por Hora (PH):', precoHora);
+    console.log('Valor do Projeto:', valorProjeto);
+    
+    if (document.querySelector('input[name="remunerationType"]:checked').value !== 'direct') {
+        console.log('=== Dados do Cálculo de PH ===');
+        console.log('Remuneração Mensal:', document.querySelector('#calculateSection input[placeholder="0,00"]')?.value);
+        console.log('Dias Úteis:', document.querySelector('#calculateSection input[placeholder="0"][max="31"]')?.value);
+        console.log('Horas por Dia:', document.querySelector('#calculateSection input[placeholder="0"][max="24"]')?.value);
+    }
 });
 
 // Tornar as funções formatarMoeda e removerLinha acessíveis globalmente para manipuladores de eventos inline
