@@ -1,3 +1,6 @@
+// Substitua a primeira linha por:
+import { initIAChat } from '../../../backend/api/valluoIA.js';
+
 let rowCounter = 0; 
 
 
@@ -126,6 +129,91 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+// Função para calcular a soma dos valores em um objeto
+function somarValores(obj) {
+    return Object.values(obj).reduce((total, valor) => {
+        const numero = parseFloat(valor.replace(/\./g, '').replace(',', '.'));
+        return total + (isNaN(numero) ? 0 : numero);
+    }, 0);
+}
+
+// Função para formatar número para moeda brasileira
+function formatarMoeda(valor) {
+    if (valor === undefined || valor === null) {
+        return '0,00';
+    }
+    
+    const numero = typeof valor === 'string' 
+        ? parseFloat(valor.replace(/\./g, '').replace(',', '.'))
+        : Number(valor);
+    
+    if (isNaN(numero)) {
+        return '0,00';
+    }
+    
+    return numero.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+// Função para exibir resultados
+function exibirResultados(ph, valorServico, custosFixos, custosVariaveis, taxas, horasProjeto) {
+    const totalCustosFixos = somarValores(custosFixos);
+    const totalCustosVariaveis = somarValores(custosVariaveis);
+    const totalTaxas = somarValores(taxas);
+    
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `
+        <div class="bg-purple-50 p-4 rounded-lg mb-4">
+            <h3 class="font-bold text-lg text-purple-700 mb-2">RESULTADOS DO CÁLCULO</h3>
+            
+            <div class="mb-4">
+                <h4 class="font-semibold text-purple-600">Preço por Hora (PH)</h4>
+                <p class="text-2xl font-bold text-gray-800">R$ ${formatarMoeda(ph)}</p>
+                <p class="text-sm text-gray-600">*Inclui custos fixos, variáveis e margem de lucro</p>
+            </div>
+
+            <div class="mb-4">
+                <h4 class="font-semibold text-purple-600">Valor do Serviço</h4>
+                <p class="text-2xl font-bold text-gray-800">R$ ${formatarMoeda(valorServico)}</p>
+                <p class="text-sm text-gray-600">*Para ${horasProjeto} horas de projeto</p>
+            </div>
+
+            <hr class="my-4 border-gray-200">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <h4 class="font-semibold text-purple-600">Custos Fixos</h4>
+                    <p class="text-lg font-bold">R$ ${formatarMoeda(totalCustosFixos)}</p>
+                    <ul class="text-sm text-gray-600 mt-2">
+                        ${Object.entries(custosFixos).map(([nome, valor]) => 
+                            `<li>${nome}: R$ ${valor}</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-purple-600">Custos Variáveis</h4>
+                    <p class="text-lg font-bold">R$ ${formatarMoeda(totalCustosVariaveis)}</p>
+                    <ul class="text-sm text-gray-600 mt-2">
+                        ${Object.entries(custosVariaveis).map(([nome, valor]) => 
+                            `<li>${nome}: R$ ${valor}</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-purple-600">Taxas e Impostos</h4>
+                    <p class="text-lg font-bold">R$ ${formatarMoeda(totalTaxas)}</p>
+                    <ul class="text-sm text-gray-600 mt-2">
+                        ${Object.entries(taxas).map(([nome, valor]) => 
+                            `<li>${nome}: R$ ${valor}</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 document.getElementById('calculateBtn').addEventListener('click', function() {
     // Captura os valores dos campos separadamente
     const custosFixos = {};
@@ -191,6 +279,35 @@ document.getElementById('calculateBtn').addEventListener('click', function() {
         console.log('Dias Úteis:', document.querySelector('#calculateSection input[placeholder="0"][max="31"]')?.value);
         console.log('Horas por Dia:', document.querySelector('#calculateSection input[placeholder="0"][max="24"]')?.value);
     }
+
+    // Cálculo do valor do serviço
+    const horasProjeto = document.querySelector('#horas-projeto input[type="number"]')?.value;
+    const totalCustosVariaveis = somarValores(custosVariaveis);
+    const totalTaxas = somarValores(taxas);
+    const valorServico = (horasProjeto * precoHora) + totalCustosVariaveis + totalTaxas;
+
+    // Exibe os resultados
+    exibirResultados(precoHora, valorServico, custosFixos, custosVariaveis, taxas, horasProjeto);
+
+    // Inicia o chat da IA com os dados calculados
+    initIAChat({
+        custosFixos,
+        custosVariaveis,
+        taxas,
+        precoHora,
+        valorServico,
+        horasProjeto
+    });
+
+    // Log no console para debug
+    console.log('Dados enviados para a IA:', {
+        custosFixos,
+        custosVariaveis,
+        taxas,
+        precoHora,
+        valorServico,
+        horasProjeto
+    });
 });
 
 // Tornar as funções formatarMoeda e removerLinha acessíveis globalmente para manipuladores de eventos inline
