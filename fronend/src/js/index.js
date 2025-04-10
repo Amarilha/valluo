@@ -1,3 +1,5 @@
+import { getDados, calcularCF, calcularCV, valorSevico} from "../../../backend/formulas.js";
+
 let rowCounter = 0; 
 
 
@@ -127,70 +129,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.getElementById('calculateBtn').addEventListener('click', function() {
-    // Captura os valores dos campos separadamente
-    const custosFixos = {};
-    const custosVariaveis = {};
-    const taxas = {};
-    
-    // Captura Custos Fixos (CF)
-    document.querySelectorAll('#CF input[type="text"]').forEach(input => {
-        const valorInput = input.nextElementSibling?.querySelector('input');
-        if (valorInput && input.value && valorInput.value) {
-            custosFixos[input.value] = valorInput.value;
-        }
-    });
-
-    // Captura Custos Variáveis (CV)
-    document.querySelectorAll('#CV input[type="text"]').forEach(input => {
-        const valorInput = input.nextElementSibling?.querySelector('input');
-        if (valorInput && input.value && valorInput.value) {
-            custosVariaveis[input.value] = valorInput.value;
-        }
-    });
-
-    // Captura Taxas
-    document.querySelectorAll('#taxa input[type="text"]').forEach(input => {
-        const valorInput = input.nextElementSibling?.querySelector('input');
-        if (valorInput && input.value && valorInput.value) {
-            taxas[input.value] = valorInput.value;
-        }
-    });
-
-    // Captura PH (Preço por Hora)
-    let precoHora = null;
-    if (document.querySelector('input[name="remunerationType"]:checked').value === 'direct') {
-        precoHora = document.querySelector('#directInput input[type="number"]')?.value;
-    } else {
-        // Captura valores do calculateSection
-        const remuneracaoMes = document.querySelector('#calculateSection input[placeholder="0,00"]')?.value;
-        const diasUteis = document.querySelector('#calculateSection input[placeholder="0"][max="31"]')?.value;
-        const horasDia = document.querySelector('#calculateSection input[placeholder="0"][max="24"]')?.value;
-        
-        if (remuneracaoMes && diasUteis && horasDia) {
-            // Converte remuneracaoMes de string "1.234,56" para número
-            const remuneracaoNumero = parseFloat(remuneracaoMes.replace(/\./g, '').replace(',', '.'));
-            // Calcula o preço por hora
-            precoHora = (remuneracaoNumero / (diasUteis * horasDia)).toFixed(2);
-        }
-    }
-
-    // Captura Valor do Projeto
-    const valorProjeto = document.querySelector('#valor-projeto input[type="number"]')?.value;
-
-    // Mostra cada valor separadamente no console
-    console.log('=== Valores Separados ===');
-    console.log('Custos Fixos (CF):', custosFixos);
-    console.log('Custos Variáveis (CV):', custosVariaveis);
-    console.log('Taxas:', taxas);
-    console.log('Preço por Hora (PH):', precoHora);
-    console.log('Valor do Projeto:', valorProjeto);
-    
-    if (document.querySelector('input[name="remunerationType"]:checked').value !== 'direct') {
-        console.log('=== Dados do Cálculo de PH ===');
-        console.log('Remuneração Mensal:', document.querySelector('#calculateSection input[placeholder="0,00"]')?.value);
-        console.log('Dias Úteis:', document.querySelector('#calculateSection input[placeholder="0"][max="31"]')?.value);
-        console.log('Horas por Dia:', document.querySelector('#calculateSection input[placeholder="0"][max="24"]')?.value);
-    }
+ 
+    //getDados();
+    //calcularCF();
+    //calcularCV();
+    valorSevico();
 });
 
 // Tornar as funções formatarMoeda e removerLinha acessíveis globalmente para manipuladores de eventos inline
