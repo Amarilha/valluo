@@ -1,4 +1,4 @@
-import { getDados, calcularCF, calcularCV, valorSevico} from "../../../backend/formulas.js";
+import { getDados, calcularCF, calcularCV, valorSevico, calcularEExibirResultados} from "../../../backend/formulas.js";
 
 let rowCounter = 0; 
 
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
             adicionarLinha(containerId, placeholder, isPercentage);
         });
     });
-    console.log('Listeners anexados para adicionar linha.');
+   
 
     // Inicializar event listeners para os toggles
     document.querySelectorAll('input[name="impostoType"]').forEach(input => {
@@ -128,12 +128,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+
+
+
 document.getElementById('calculateBtn').addEventListener('click', function() {
- 
-    //getDados();
-    //calcularCF();
-    //calcularCV();
-    valorSevico();
+    calcularEExibirResultados();
 });
 
 // Tornar as funções formatarMoeda e removerLinha acessíveis globalmente para manipuladores de eventos inline
