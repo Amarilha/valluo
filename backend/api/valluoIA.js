@@ -1,3 +1,5 @@
+import { getDados } from "../formulas.js";
+
 const GEMINI_API_KEY = "sk-AIzaSyDCYmQfZsFJYnKnQvuvpPIanYejVp76wgY";
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=GEMINI_API_KEY";
 
@@ -40,7 +42,8 @@ async function sendToGemini(message, systemPrompt = "") {
 }
 
 // Função para analisar os dados e gerar dicas usando o Gemini
-async function analisarEGerarDicas(dados) {
+async function analisarEGerarDicas() {
+    const dados = getDados();
     const mensagem = `
     Analise os seguintes dados de precificação e forneça 3 dicas práticas para melhorar o faturamento:
 
@@ -94,12 +97,12 @@ function createChatUI(dicasIniciais = "") {
     `;
 }
 
-async function initIAChat(dados) {
+async function initIAChat() {
     const resultDiv = document.getElementById('result');
     if (!resultDiv) return;
 
     // Primeiro, gera as dicas iniciais
-    const dicasIniciais = await analisarEGerarDicas(dados);
+    const dicasIniciais = await analisarEGerarDicas();
 
     if (!document.getElementById('ia-chat')) {
         resultDiv.insertAdjacentHTML('beforeend', createChatUI(dicasIniciais));
@@ -116,6 +119,7 @@ async function initIAChat(dados) {
             messagesDiv.innerHTML += `<div class="text-left"><p class="inline-block bg-gray-100 rounded-lg px-3 py-1">Analisando sua dúvida...</p></div>`;
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
+            const dados = getDados();
             const response = await sendToGemini(
                 `Contexto dos dados do usuário: ${JSON.stringify(dados)}\n\nPergunta do usuário: ${message}`,
                 "Você é um consultor da Valluo. Use os dados do contexto para responder a pergunta do usuário de forma específica e personalizada."

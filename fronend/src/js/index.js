@@ -1,9 +1,8 @@
 import { getDados, calcularCF, calcularCV, valorSevico, calcularEExibirResultados} from "../../../backend/formulas.js";
-
+import { initIAChat } from "../../../backend/api/valluoIA.js";
 let rowCounter = 0; 
 
-
-document.addEventListener("DOMContentLoaded", function () {
+	document.addEventListener("DOMContentLoaded", function () {
     console.log('DOMContentLoaded executado!');
 
     // Função para alternar a visibilidade das informações de imposto (MEI vs ME)
@@ -132,7 +131,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 document.getElementById('calculateBtn').addEventListener('click', function() {
+
     calcularEExibirResultados();
+
+    initIAChat();
 });
 
 // Tornar as funções formatarMoeda e removerLinha acessíveis globalmente para manipuladores de eventos inline
