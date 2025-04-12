@@ -1,6 +1,6 @@
 import { getDados } from "../formulas.js";
 
-const GEMINI_API_KEY = "sk-AIzaSyDCYmQfZsFJYnKnQvuvpPIanYejVp76wgY";
+const GEMINI_API_KEY = "";
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=GEMINI_API_KEY";
 
 // Função para enviar mensagens à API do Gemini
@@ -104,31 +104,31 @@ async function initIAChat() {
     // Primeiro, gera as dicas iniciais
     const dicasIniciais = await analisarEGerarDicas();
 
-    if (!document.getElementById('ia-chat')) {
-        resultDiv.insertAdjacentHTML('beforeend', createChatUI(dicasIniciais));
+    //if (!document.getElementById('ia-chat')) {
+    //    resultDiv.insertAdjacentHTML('beforeend', createChatUI(dicasIniciais));
 
-        document.getElementById('ia-send').addEventListener('click', async () => {
-            const input = document.getElementById('ia-input');
-            const message = input.value.trim();
-            if (!message) return;
+    //    document.getElementById('ia-send').addEventListener('click', async () => {
+    //        const input = document.getElementById('ia-input');
+    //        const message = input.value.trim();
+    //        if (!message) return;
 
-            const messagesDiv = document.getElementById('ia-messages');
-            messagesDiv.innerHTML += `<div class="text-right"><p class="inline-block bg-purple-100 rounded-lg px-3 py-1">${message}</p></div>`;
+    //        const messagesDiv = document.getElementById('ia-messages');
+    //        messagesDiv.innerHTML += `<div class="text-right"><p class="inline-block bg-purple-100 rounded-lg px-3 py-1">${message}</p></div>`;
 
-            input.value = '';
-            messagesDiv.innerHTML += `<div class="text-left"><p class="inline-block bg-gray-100 rounded-lg px-3 py-1">Analisando sua dúvida...</p></div>`;
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    //        input.value = '';
+    //        messagesDiv.innerHTML += `<div class="text-left"><p class="inline-block bg-gray-100 rounded-lg px-3 py-1">Analisando sua dúvida...</p></div>`;
+    //        messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-            const dados = getDados();
-            const response = await sendToGemini(
-                `Contexto dos dados do usuário: ${JSON.stringify(dados)}\n\nPergunta do usuário: ${message}`,
-                "Você é um consultor da Valluo. Use os dados do contexto para responder a pergunta do usuário de forma específica e personalizada."
-            );
+    //        const dados = getDados();
+    //        const response = await sendToGemini(
+    //            `Contexto dos dados do usuário: ${JSON.stringify(dados)}\n\nPergunta do usuário: ${message}`,
+    //            "Você é um consultor da Valluo. Use os dados do contexto para responder a pergunta do usuário de forma específica e personalizada."
+    //        );
 
-            messagesDiv.lastElementChild.innerHTML = `<p class="inline-block bg-gray-100 rounded-lg px-3 py-1">${response}</p>`;
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        });
-    }
+    //        messagesDiv.lastElementChild.innerHTML = `<p class="inline-block bg-gray-100 rounded-lg px-3 py-1">${response}</p>`;
+    //        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    //    });
+   //}
 }
 
 export { initIAChat };
