@@ -209,13 +209,32 @@ export function exibirResultados(ph, valorServico, custosFixos, custosVariaveis,
     
     // Definição das margens de lucro
     const margemMinima = 10; // 10% mínimo
-    const margemMaxima = 20; // 20% máximo
-    const margemIndicada = 15; // 15% indicada
+    
+    // Cálculo da margem indicada (equilibrada)
+    const margemIndicada = Math.min(
+        // Margem baseada nos custos fixos mensais
+        ((precoMinimo * 1.2 * horasMes) - totalCustosFixosMensais) / (precoMinimo * 1.2) * 100, // 20% acima do mínimo
+        // Margem baseada nos custos variáveis
+        ((precoMinimo * 1.2) - totalCustosVariaveis) / (precoMinimo * 1.2) * 100, // 20% acima do mínimo
+        // Margem máxima de 25% para evitar preços muito altos
+        25
+    );
+    
+    // Cálculo da margem máxima de lucro
+    const margemMaxima = Math.min(
+        // Margem máxima baseada nos custos fixos mensais
+        ((valorServico * horasMes) - totalCustosFixosMensais) / valorServico * 100,
+        // Margem máxima baseada nos custos variáveis
+        (valorServico - totalCustosVariaveis) / valorServico * 100
+    );
     
     // Cálculo dos preços com diferentes margens
     const precoComMargemMinima = precoMinimo * (1 + margemMinima/100);
     const precoComMargemMaxima = precoMinimo * (1 + margemMaxima/100);
     const precoComMargemIndicada = precoMinimo * (1 + margemIndicada/100);
+    
+    // Atualizar o valor do projeto para usar a margem indicada
+    valorServico = precoComMargemIndicada;
     
     // Calcular custos fixos proporcionais ao projeto
     const custosFixosProporcionais = (totalCustosFixosMensais / horasMes) * horasProjeto;
@@ -226,10 +245,10 @@ export function exibirResultados(ph, valorServico, custosFixos, custosVariaveis,
     // Calcular margem de lucro inicial
     let margemLucro = valorServico > 0 ? (valorServico - custosTotais) / valorServico * 100 : 0;
     
-    // Se a margem de lucro for maior que 20%, ajustar o valor do serviço
-    if (margemLucro > 20) {
-        valorServico = custosTotais / 0.8; // 100% / (100% - 20%)
-        margemLucro = 20;
+    // Se a margem de lucro for maior que a margem máxima, ajustar o valor do serviço
+    if (margemLucro > margemMaxima) {
+        valorServico = custosTotais / (1 - margemMaxima/100);
+        margemLucro = margemMaxima;
     }
     
     const lucro = valorServico - custosTotais;
@@ -289,11 +308,11 @@ export function exibirResultados(ph, valorServico, custosFixos, custosVariaveis,
                             <p class="text-lg font-bold">R$ ${formatarMoeda(precoComMargemMinima)}</p>
                         </div>
                         <div>
-                            <p class="font-semibold text-purple-600">Margem Indicada (15%)</p>
+                            <p class="font-semibold text-purple-600">Margem Indicada (${margemIndicada.toFixed(1)}%)</p>
                             <p class="text-lg font-bold">R$ ${formatarMoeda(precoComMargemIndicada)}</p>
                         </div>
                         <div>
-                            <p class="font-semibold text-purple-600">Margem Máxima (20%)</p>
+                            <p class="font-semibold text-purple-600">Margem Máxima (${margemMaxima.toFixed(1)}%)</p>
                             <p class="text-lg font-bold">R$ ${formatarMoeda(precoComMargemMaxima)}</p>
                         </div>
                     </div>
@@ -301,12 +320,31 @@ export function exibirResultados(ph, valorServico, custosFixos, custosVariaveis,
             </div>
 
             <div class="bg-white p-4 rounded-lg shadow mb-4">
-                <h4 class="font-semibold text-purple-600 mb-2">Margem de Lucro</h4>
+                <h4 class="font-semibold text-purple-600 mb-2">Margens de Lucro</h4>
                 <div class="space-y-2">
-                    <p class="text-lg font-bold">${margemLucro.toFixed(1)}% (${formatarMoeda(lucro)} de lucro)</p>
-                    <p class="text-sm text-gray-600">Baseado nos custos totais de R$ ${formatarMoeda(custosTotais)}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <p class="font-semibold text-purple-700 mb-1">Margem Mínima</p>
+                            <p class="text-2xl font-bold">${margemMinima}%</p>
+                            <p class="text-sm text-gray-600">Preço: R$ ${formatarMoeda(precoComMargemMinima)}</p>
+                            <p class="text-sm text-gray-600">Lucro: R$ ${formatarMoeda(precoComMargemMinima - custosTotais)}</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <p class="font-semibold text-purple-700 mb-1">Margem Indicada</p>
+                            <p class="text-2xl font-bold">${margemIndicada.toFixed(1)}%</p>
+                            <p class="text-sm text-gray-600">Preço: R$ ${formatarMoeda(precoComMargemIndicada)}</p>
+                            <p class="text-sm text-gray-600">Lucro: R$ ${formatarMoeda(precoComMargemIndicada - custosTotais)}</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <p class="font-semibold text-purple-700 mb-1">Margem Máxima</p>
+                            <p class="text-2xl font-bold">${margemMaxima.toFixed(1)}%</p>
+                            <p class="text-sm text-gray-600">Preço: R$ ${formatarMoeda(precoComMargemMaxima)}</p>
+                            <p class="text-sm text-gray-600">Lucro: R$ ${formatarMoeda(precoComMargemMaxima - custosTotais)}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     `;
 }
