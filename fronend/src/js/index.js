@@ -1,5 +1,5 @@
-import { getDados, calcularCF, calcularCV, valorSevico, calcularEExibirResultados} from "../../../backend/formulas.js";
-import { initIAChat } from "../../../backend/api/valluoIA.js";
+import { getDados, calcularCF, calcularCV, valorSevico, calcularEExibirResultados} from "https://amarilha.github.io/valluo/backend/formulas.js";
+import { initIAChat } from "https://amarilha.github.io/valluo/backend/api/valluoIA.js";
 let rowCounter = 0; 
 
 	document.addEventListener("DOMContentLoaded", function () {
