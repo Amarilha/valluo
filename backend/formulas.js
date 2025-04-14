@@ -183,11 +183,19 @@ export function exibirResultados(ph, valorServico, custosFixos, custosVariaveis,
     };
 
     // Função auxiliar para gerar listas HTML
-    const gerarListaHTML = (obj) => {
+    const gerarListaHTML = (obj, isPercentage = false) => {
         if (!obj || typeof obj !== 'object') return '<li>Nenhum item cadastrado</li>';
-        return Object.entries(obj).map(([nome, valor]) => 
-            `<li>${nome}: R$ ${formatarMoeda(valor)}</li>`
-        ).join('');
+        
+        return Object.entries(obj).map(([nome, valor]) => {
+            if (isPercentage) {
+                // Formata como porcentagem (5 → 5,0%)
+                const percentValue = parseFloat(valor).toFixed(1).replace('.', ',');
+                return `<li>${nome}: ${percentValue}%</li>`;
+            } else {
+                // Formata como moeda (padrão)
+                return `<li>${nome}: R$ ${formatarMoeda(valor)}</li>`;
+            }
+        }).join('');
     };
 
     // Obter horas trabalhadas no mês (do formulário)
@@ -196,7 +204,7 @@ export function exibirResultados(ph, valorServico, custosFixos, custosVariaveis,
     // Calcular totais
     const totalCustosFixosMensais = somarValores(custosFixos);
     const totalCustosVariaveis = somarValores(custosVariaveis);
-    const totalTaxas = somarValores(taxas);
+    const totalTaxas = totalCustosVariaveis*(somarValores(taxas) / 100);
     
     // Cálculo do custo fixo por hora
     const custoFixoPorHora = totalCustosFixosMensais / horasMes;
@@ -291,7 +299,7 @@ export function exibirResultados(ph, valorServico, custosFixos, custosVariaveis,
                     <h4 class="font-semibold text-purple-600">Taxas e Impostos</h4>
                     <p class="text-lg font-bold">R$ ${formatarMoeda(totalTaxas)}</p>
                     <ul class="text-sm text-gray-600 mt-2">
-                        ${gerarListaHTML(taxas)}
+                        ${gerarListaHTML(taxas, true)}  <!-- Adicione true para formatar como % -->
                     </ul>
                 </div>
             </div>
