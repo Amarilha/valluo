@@ -163,22 +163,32 @@ export function calcularEExibirResultados() {
 }
 
 export function exibirResultados(ph, valorServico, custosFixos, custosVariaveis, taxas, horasProjeto, diasUteis, horasDia) {
-    // Função auxiliar para formatar valores monetários
+    // Função auxiliar para formatar valores monetários CORRIGIDA
     const formatarMoeda = (valor) => {
         if (!valor) return "0,00";
-        return parseFloat(valor).toLocaleString('pt-BR', {
+        
+        // Converte para número, tratando tanto formato brasileiro quanto internacional
+        const numero = typeof valor === 'string' 
+            ? parseFloat(valor.replace(/\./g, '').replace(',', '.')) 
+            : Number(valor);
+            
+        if (isNaN(numero)) return "0,00";
+        
+        return numero.toLocaleString('pt-BR', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
     };
-
     // Função auxiliar para somar valores de um objeto
     const somarValores = (obj) => {
         if (!obj || typeof obj !== 'object') return 0;
         return Object.values(obj).reduce((total, valor) => {
             if (!valor) return total;
-            const num = parseFloat(valor.toString().replace('.', '').replace(',', '.')) || 0;
-            return total + num;
+            // Converte string para número, tratando formato brasileiro (1.234,56)
+            const num = typeof valor === 'string'
+                ? parseFloat(valor.replace(/\./g, '').replace(',', '.'))
+                : Number(valor);
+            return total + (isNaN(num) ? 0 : num);
         }, 0);
     };
 
