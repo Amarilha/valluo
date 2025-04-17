@@ -1,4 +1,4 @@
-import { getDados } from "../formulas.js";
+import { getDados } from "../services/formulas.js";
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
 const GEMINI_API_KEY = "AIzaSyB6BT3IMAA7m0mz_i7dWDX-ns88u83hbBY";
