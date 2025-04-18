@@ -278,91 +278,90 @@ export function exibirResultados(ph, valorServico, custosFixos, custosVariaveis,
     }
 
     resultDiv.innerHTML = `
-        <div class="bg-purple-50 p-4 rounded-lg mb-4">
-            <h3 class="font-bold text-lg text-purple-700 mb-2">RESULTADOS DO CÁLCULO</h3>
-            
-            <div class="mb-4">
-                <h4 class="font-semibold text-purple-600">Valor do Projeto</h4>
-                <p class="text-2xl font-bold text-gray-800">R$ ${formatarMoeda(valorServico)}</p>
-                <p class="text-sm text-gray-600">*Para ${horasProjeto || 0} horas de projeto</p>
-            </div>
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 mb-6 glass-effect">
+    <h3 class="font-bold text-lg text-purple-300 mb-4">RESULTADOS DO CÁLCULO</h3>
+    
+    <div class="mb-6">
+        <h4 class="font-semibold text-purple-300">Valor do Projeto</h4>
+        <p class="text-2xl font-bold text-white">R$ ${formatarMoeda(valorServico)}</p>
+        <p class="text-sm text-gray-400">Para ${horasProjeto || 0} horas de projeto</p>
+    </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                    <h4 class="font-semibold text-purple-600">Custos Variáveis</h4>
-                    <p class="text-lg font-bold">R$ ${formatarMoeda(totalCustosVariaveis)}</p>
-                    <ul class="text-sm text-gray-600 mt-2">
-                        ${gerarListaHTML(custosVariaveis)}
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-semibold text-purple-600">Custos Fixos Proporcionais</h4>
-                    <p class="text-lg font-bold">R$ ${formatarMoeda(custosFixosProporcionais)}</p>
-                    <p class="text-sm text-gray-600">(R$ ${formatarMoeda(totalCustosFixosMensais)} ÷ ${horasMes}h) × ${horasProjeto}h</p>
-                    <ul class="text-sm text-gray-600 mt-2">
-                        ${gerarListaHTML(custosFixos)}
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-semibold text-purple-600">Taxas e Impostos</h4>
-                    <p class="text-lg font-bold">R$ ${formatarMoeda(totalTaxas)}</p>
-                    <ul class="text-sm text-gray-600 mt-2">
-                        ${gerarListaHTML(taxas, true)}  <!-- Adicione true para formatar como % -->
-                    </ul>
-                </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-lg shadow mb-4">
-                <h4 class="font-semibold text-purple-600 mb-2">Análise de Preço</h4>
-                <div class="space-y-2">
-                    <p>Custo Fixo por Hora: R$ ${formatarMoeda(custoFixoPorHora)}</p>
-                    <p>Custo Total do Projeto: R$ ${formatarMoeda(custoTotalProjeto)}</p>
-                    <p>Preço Mínimo (Sem Lucro): R$ ${formatarMoeda(precoMinimo)}</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <p class="font-semibold text-purple-600">Margem Mínima (10%)</p>
-                            <p class="text-lg font-bold">R$ ${formatarMoeda(precoComMargemMinima)}</p>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-purple-600">Margem Indicada (${margemIndicada.toFixed(1)}%)</p>
-                            <p class="text-lg font-bold">R$ ${formatarMoeda(precoComMargemIndicada)}</p>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-purple-600">Margem Máxima (${margemMaxima.toFixed(1)}%)</p>
-                            <p class="text-lg font-bold">R$ ${formatarMoeda(precoComMargemMaxima)}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-lg shadow mb-4">
-                <h4 class="font-semibold text-purple-600 mb-2">Margens de Lucro</h4>
-                <div class="space-y-2">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-purple-50 p-4 rounded-lg">
-                            <p class="font-semibold text-purple-700 mb-1">Margem Mínima</p>
-                            <p class="text-2xl font-bold">${margemMinima}%</p>
-                            <p class="text-sm text-gray-600">Preço: R$ ${formatarMoeda(precoComMargemMinima)}</p>
-                            <p class="text-sm text-gray-600">Lucro: R$ ${formatarMoeda(precoComMargemMinima - custosTotais)}</p>
-                        </div>
-                        <div class="bg-purple-50 p-4 rounded-lg">
-                            <p class="font-semibold text-purple-700 mb-1">Margem Indicada</p>
-                            <p class="text-2xl font-bold">${margemIndicada.toFixed(1)}%</p>
-                            <p class="text-sm text-gray-600">Preço: R$ ${formatarMoeda(precoComMargemIndicada)}</p>
-                            <p class="text-sm text-gray-600">Lucro: R$ ${formatarMoeda(precoComMargemIndicada - custosTotais)}</p>
-                        </div>
-                        <div class="bg-purple-50 p-4 rounded-lg">
-                            <p class="font-semibold text-purple-700 mb-1">Margem Máxima</p>
-                            <p class="text-2xl font-bold">${margemMaxima.toFixed(1)}%</p>
-                            <p class="text-sm text-gray-600">Preço: R$ ${formatarMoeda(precoComMargemMaxima)}</p>
-                            <p class="text-sm text-gray-600">Lucro: R$ ${formatarMoeda(precoComMargemMaxima - custosTotais)}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div>
+            <h4 class="font-semibold text-purple-300">Custos Variáveis</h4>
+            <p class="text-lg font-bold text-white">R$ ${formatarMoeda(totalCustosVariaveis)}</p>
+            <ul class="text-sm text-gray-400 mt-2">
+                ${gerarListaHTML(custosVariaveis)}
+            </ul>
         </div>
+        
+        <div>
+            <h4 class="font-semibold text-purple-300">Custos Fixos Proporcionais</h4>
+            <p class="text-lg font-bold text-white">R$ ${formatarMoeda(custosFixosProporcionais)}</p>
+            <p class="text-sm text-gray-400">(R$ ${formatarMoeda(totalCustosFixosMensais)} ÷ ${horasMes}h) × ${horasProjeto}h</p>
+            <ul class="text-sm text-gray-400 mt-2">
+                ${gerarListaHTML(custosFixos)}
+            </ul>
+        </div>
+        
+        <div>
+            <h4 class="font-semibold text-purple-300">Taxas e Impostos</h4>
+            <p class="text-lg font-bold text-white">R$ ${formatarMoeda(totalTaxas)}</p>
+            <ul class="text-sm text-gray-400 mt-2">
+                ${gerarListaHTML(taxas, true)}
+            </ul>
+        </div>
+    </div>
+
+    <div class="p-4 rounded-lg bg-gray-800 border border-gray-700 mb-4">
+        <h4 class="font-semibold text-purple-300 mb-2">Análise de Preço</h4>
+        <div class="space-y-2">
+            <p class="text-gray-300">Custo Fixo por Hora: R$ ${formatarMoeda(custoFixoPorHora)}</p>
+            <p class="text-gray-300">Custo Total do Projeto: R$ ${formatarMoeda(custoTotalProjeto)}</p>
+            <p class="text-gray-300">Preço Mínimo (Sem Lucro): R$ ${formatarMoeda(precoMinimo)}</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <p class="font-semibold text-purple-300">Margem Mínima (10%)</p>
+                    <p class="text-lg font-bold text-white">R$ ${formatarMoeda(precoComMargemMinima)}</p>
+                </div>
+                <div>
+                    <p class="font-semibold text-purple-300">Margem Indicada (${margemIndicada.toFixed(1)}%)</p>
+                    <p class="text-lg font-bold text-white">R$ ${formatarMoeda(precoComMargemIndicada)}</p>
+                </div>
+                <div>
+                    <p class="font-semibold text-purple-300">Margem Máxima (${margemMaxima.toFixed(1)}%)</p>
+                    <p class="text-lg font-bold text-white">R$ ${formatarMoeda(precoComMargemMaxima)}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4 rounded-lg bg-gray-800 border border-gray-700 mb-4">
+        <h4 class="font-semibold text-purple-300 mb-2">Margens de Lucro</h4>
+        <div class="space-y-2">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 rounded-lg bg-gray-900 border border-gray-700">
+                    <p class="font-semibold text-purple-300 mb-1">Margem Mínima</p>
+                    <p class="text-2xl font-bold text-white">${margemMinima}%</p>
+                    <p class="text-sm text-gray-400">Preço: R$ ${formatarMoeda(precoComMargemMinima)}</p>
+                    <p class="text-sm text-gray-400">Lucro: R$ ${formatarMoeda(precoComMargemMinima - custosTotais)}</p>
+                </div>
+                <div class="p-4 rounded-lg bg-gray-900 border border-gray-700">
+                    <p class="font-semibold text-purple-300 mb-1">Margem Indicada</p>
+                    <p class="text-2xl font-bold text-white">${margemIndicada.toFixed(1)}%</p>
+                    <p class="text-sm text-gray-400">Preço: R$ ${formatarMoeda(precoComMargemIndicada)}</p>
+                    <p class="text-sm text-gray-400">Lucro: R$ ${formatarMoeda(precoComMargemIndicada - custosTotais)}</p>
+                </div>
+                <div class="p-4 rounded-lg bg-gray-900 border border-gray-700">
+                    <p class="font-semibold text-purple-300 mb-1">Margem Máxima</p>
+                    <p class="text-2xl font-bold text-white">${margemMaxima.toFixed(1)}%</p>
+                    <p class="text-sm text-gray-400">Preço: R$ ${formatarMoeda(precoComMargemMaxima)}</p>
+                    <p class="text-sm text-gray-400">Lucro: R$ ${formatarMoeda(precoComMargemMaxima - custosTotais)}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     `;
 }

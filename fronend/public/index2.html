@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valluo - Soluções Financeiras</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+        body { font-family: 'Roboto', sans-serif; background-color: #121212; }
+        .gradient-bg { background: linear-gradient(135deg, #a78bfa 0%, #4c1d95 100%); }
+        .hover-scale { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.03); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .chart-line {
+            stroke: #a78bfa;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 4s ease-in-out forwards;
+        }
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        .coin {
+            position: absolute;
+            font-size: 24px;
+            color: #a78bfa;
+            opacity: 0.3;
+            animation: rise 6s linear infinite;
+        }
+        .graph {
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            opacity: 0.2;
+            animation: rise 8s linear infinite;
+        }
+        @keyframes rise {
+            0% { transform: translateY(100vh); opacity: 0.3; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-20vh); opacity: 0; }
+        }
+        .coin:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .coin:nth-child(2) { left: 30%; animation-delay: 1s; }
+        .coin:nth-child(3) { left: 50%; animation-delay: 2s; }
+        .coin:nth-child(4) { left: 70%; animation-delay: 3s; }
+        .coin:nth-child(5) { left: 90%; animation-delay: 4s; }
+        .graph:nth-child(6) { left: 20%; animation-delay: 1.5s; }
+        .graph:nth-child(7) { left: 60%; animation-delay: 3.5s; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function Header() {
+            return (
+                <header className="fixed w-full z-20 bg-gray-900/95 shadow-sm">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                        <h1 className="text-2xl font-bold text-purple-300 tracking-tight">Valluo</h1>
+                        <nav className="space-x-10">
+                            <a href="#home" className="text-gray-300 hover:text-purple-300 transition font-medium">Início</a>
+                            <a href="#sobre" className="text-gray-300 hover:text-purple-300 transition font-medium">Sobre</a>
+                            <a href="#servicos" className="text-gray-300 hover:text-purple-300 transition font-medium">Soluções</a>
+                            <a href="#contato" className="text-gray-300 hover:text-purple-300 transition font-medium">Contato</a>
+                        </nav>
+                    </div>
+                </header>
+            );
+        }
+
+        function Hero() {
+            return (
+                <section id="home" className="gradient-bg text-white min-h-screen flex items-center relative overflow-hidden">
+                    <div className="absolute inset-0 z-0">
+                        <div className="coin">💰</div>
+                        <div className="coin">💸</div>
+                        <div className="coin">📈</div>
+                        <div className="coin">💎</div>
+                        <div className="coin">💵</div>
+                        <div className="graph">
+                            <svg viewBox="0 0 100 50">
+                                <polyline points="0,40 20,35 40,30 60,25 80,15 100,10" className="chart-line" />
+                            </svg>
+                        </div>
+                        <div className="graph">
+                            <svg viewBox="0 0 100 50">
+                                <polyline points="0,45 25,35 50,20 75,15 100,5" className="chart-line" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center z-10">
+                        <div className="w-1/2">
+                            <h2 className="text-5xl font-bold mb-6 leading-tight">Valluo: Gestão Financeira Inteligente</h2>
+                            <p className="text-xl mb-8 max-w-md opacity-90">Soluções financeiras sofisticadas, alimentadas por tecnologia avançada, para maximizar seu potencial econômico.</p>
+                            <a href="#contato" className="inline-block bg-purple-300 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-purple-400 transition hover-scale">Conheça Nossas Soluções</a>
+                        </div>
+                        <div className="w-1/2">
+                            <svg viewBox="0 0 200 100" className="w-full h-64">
+                                <polyline points="0,80 20,70 40,60 60,65 80,50 100,55 120,40 140,45 160,30 180,35 200,20" className="chart-line" />
+                            </svg>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function Sobre() {
+            return (
+                <section id="sobre" className="py-24 bg-gray-900">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <h2 className="text-4xl font-bold text-white text-center mb-16">Sobre a Valluo</h2>
+                        <div className="grid md:grid-cols-2 gap-12">
+                            <div className="glass-effect p-8 rounded-lg hover-scale">
+                                <h3 className="text-2xl font-semibold text-purple-300 mb-4">Nossa Missão</h3>
+                                <p className="text-gray-300">Fornecer ferramentas financeiras de ponta que empoderam nossos clientes a tomar decisões informadas e alcançar estabilidade econômica.</p>
+                            </div>
+                            <div className="glass-effect p-8 rounded-lg hover-scale">
+                                <h3 className="text-2xl font-semibold text-purple-300 mb-4">Nossa Visão</h3>
+                                <p className="text-gray-300">Liderar a inovação no setor financeiro, oferecendo plataformas seguras, intuitivas e orientadas por dados para o sucesso financeiro global.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function Servicos() {
+            const servicos = [
+                { title: "Análise de Investimentos", desc: "Acesse relatórios detalhados e recomendações baseadas em IA para otimizar sua carteira.", icon: "📊" },
+                { title: "Planejamento Estratégico", desc: "Desenvolva planos financeiros robustos com simulações e projeções personalizadas.", icon: "📈" },
+                { title: "Segurança de Dados", desc: "Proteção avançada com criptografia AES-256 e monitoramento em tempo real.", icon: "🔐" },
+            ];
+
+            return (
+                <section id="servicos" className="py-24 bg-gray-900">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <h2 className="text-4xl font-bold text-white text-center mb-16">Soluções Financeiras</h2>
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {servicos.map((servico, index) => (
+                                <div key={index} className="glass-effect p-8 rounded-lg hover-scale text-center">
+                                    <div className="text-4xl mb-4">{servico.icon}</div>
+                                    <h3 className="text-xl font-semibold text-purple-300 mb-3">{servico.title}</h3>
+                                    <p className="text-gray-300">{servico.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function Contato() {
+            return (
+                <section id="contato" className="py-24 bg-gray-900">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                        <h2 className="text-4xl font-bold text-white mb-16">Fale com Nossos Especialistas</h2>
+                        <p className="text-gray-300 max-w-2xl mx-auto mb-10 text-lg">Entre em contato para descobrir como a Valluo pode transformar sua estratégia financeira.</p>
+                        <div className="max-w-lg mx-auto">
+                            <input type="text" placeholder="Nome Completo" className="w-full p-4 mb-6 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-300 transition" />
+                            <input type="email" placeholder="E-mail Corporativo" className="w-full p-4 mb-6 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-300 transition" />
+                            <textarea placeholder="Sua Mensagem" className="w-full p-4 mb-6 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-300 transition" rows="5"></textarea>
+                            <button className="bg-purple-300 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-purple-400 transition hover-scale">Enviar Solicitação</button>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function Footer() {
+            return (
+                <footer className="bg-gray-950 text-gray-300 py-12">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid md:grid-cols-3 gap-8">
+                            <div>
+                                <h3 className="text-lg font-semibold text-purple-300 mb-4">Valluo</h3>
+                                <p className="text-gray-400 text-sm">Soluções financeiras para um mundo em evolução.</p>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold text-purple-300 mb-4">Links Rápidos</h3>
+                                <ul className="space-y-2 text-sm">
+                                    <li><a href="#sobre" className="hover:text-purple-300 transition">Sobre</a></li>
+                                    <li><a href="#servicos" className="hover:text-purple-300 transition">Soluções</a></li>
+                                    <li><a href="#contato" className="hover:text-purple-300 transition">Contato</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold text-purple-300 mb-4">Redes Sociais</h3>
+                                <div className="flex space-x-6">
+                                    <a href="#" className="hover:text-purple-300 transition">LinkedIn</a>
+                                    <a href="#" className="hover:text-purple-300 transition">Twitter</a>
+                                    <a href="#" className="hover:text-purple-300 transition">Instagram</a>
+                                </div>
+                            </div>
+                        </div>
+                        <p className="text-center text-sm mt-12">© 2025 Valluo. Todos os direitos reservados.</p>
+                    </div>
+                </footer>
+            );
+        }
+
+        function App() {
+            return (
+                <div>
+                    <Header />
+                    <Hero />
+                    <Sobre />
+                    <Servicos />
+                    <Contato />
+                    <Footer />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

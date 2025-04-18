@@ -76,16 +76,13 @@ let rowCounter = 0;
             const uniqueId = `row-${rowCounter++}`; // Gera um ID único
 
             newRow.innerHTML = `
-                <input type="text" class="form-input block w-1/3 sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50" placeholder="${placeholderText}" id="nome-${uniqueId}">
-                <div class="relative rounded-md shadow-sm w-1/3">
-                    ${isPercentage ? '' : '<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><span class="text-gray-500 sm:text-sm">R$</span></div>'}
-                    <input type="text" oninput="formatarMoeda(this)"
-                           placeholder="0,00"
-                           class="form-input block w-full ${isPercentage ? '' : 'pl-10'} sm:text-sm sm:leading-5 rounded-md border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50"
-                           id="valor-${uniqueId}">
-                    ${isPercentage ? '<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none"><span class="text-gray-500 sm:text-sm">%</span></div>' : ''}
+                <input type="text" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-300 transition" placeholder="${placeholderText}" id="nome-${uniqueId}">
+                <div class="relative w-1/2">
+                    ${isPercentage ? '' : '<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>'}
+                    <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="w-full ${isPercentage ? 'pr-10' : 'pl-10'} p-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-300 transition" id="valor-${uniqueId}">
+                    ${isPercentage ? '<span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">%</span>' : ''}
                 </div>
-                <button type="button" onclick="removerLinha(this)" class="text-red-600 font-bold hover:text-red-700 transition duration-150 ease-in-out">X</button>
+                <button type="button" onclick="removerLinha(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-times"></i></button>
             `;
 
             container.parentNode.insertBefore(newRow, container.nextSibling);
