@@ -121,7 +121,7 @@ body {
 }
 
 .form-control {
-    width: 100%;
+    width: 91.36%;
     padding: 14px 16px;
     background-color: var(--surface);
     border: 1px solid rgba(126, 87, 194, 0.2);
@@ -154,6 +154,7 @@ body {
 }
 
 .btn-primary {
+    width: 100%;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
     box-shadow: 0 4px 15px rgba(199, 146, 234, 0.3);
