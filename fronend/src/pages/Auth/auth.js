@@ -1,4 +1,4 @@
-import { auth,signInWithEmailAndPassword,GoogleAuthProvider,provider,signInWithPopup,providerMicrosoft,OAuthProvider } from "../../../../backend/src/config/firebaseConfig.js";
+import { auth,GoogleAuthProvider,provider,signInWithPopup,collection,db,addDoc,setDoc,doc } from "../../../../backend/src/config/firebaseConfig.js";
 
  // Script para alternar entre os formulários de login e cadastro
  document.getElementById('show-signup').addEventListener('click', function(e) {
@@ -25,13 +25,31 @@ document.getElementById('valluo-logo-signup').addEventListener('click', function
 
 // Google
 const googleButton = document.getElementById('googleLogin');
-googleButton.addEventListener("click", function(event) {
+googleButton.addEventListener("click", async function(event) {
+  event.preventDefault();
   signInWithPopup(auth, provider)
   .then((result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const user = result.user;
-    window.location.href = "dashboard2.html";
+
+    console.log(user);
+
+    try {
+     // 1. Salva email no documento principal
+    setDoc(doc(db, "users", user.uid), {
+      email: user.email,
+      name: user.displayName,
+      photoURL: user.photoURL,
+      token: credential.accessToken
+    });
+
+    } catch (error) {
+        console.log(error);
+    }
+
+    // ...
+    //window.location.href = "dashboard2.html";
 
   }).catch((error) => {
     // Handle Errors here.
