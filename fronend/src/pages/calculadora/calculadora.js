@@ -1,13 +1,18 @@
 import { calcularEExibirResultados} from "../../services/formulas.js";
 import { initIAChat } from "../../services/valluoIA.js";
+import {stateAuth,getUser} from "../../services/estadoAuth.js";
 let rowCounter = 0; 
 
 // Verifica se o usuário já usou a calculadora
-function checkUsage() {
+async function checkUsage() {
     const used = localStorage.getItem('calculatorUsed');
-    console.log(used)
-    if (used) {
-        // Create modal HTML
+    const uid = await stateAuth();
+    
+    console.log('Calculator used:', used);
+    console.log('User ID:', uid);
+
+    if (used && !uid) {
+        // User has used calculator but isn't logged in - show modal
         const modalHTML = `
             <div id="calculator-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full glass-effect">
@@ -25,15 +30,15 @@ function checkUsage() {
             </div>
         `;
         
-        // Insert modal into DOM
         document.body.insertAdjacentHTML('beforeend', modalHTML);
-        
         return false;
     }
-    console.log(' true');
+
+    
+    // Return true if user is authenticated or hasn't used calculator yet
     return true;
 }
-
+checkUsage()
 function markAsUsed() {
     localStorage.setItem('calculatorUsed', 'true');
     console.log('Calculadora usada');

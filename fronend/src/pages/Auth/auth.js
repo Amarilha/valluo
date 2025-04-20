@@ -32,7 +32,7 @@ googleButton.addEventListener("click", async function(event) {
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const user = result.user;
-
+    
     console.log(user);
 
     try {
@@ -49,7 +49,7 @@ googleButton.addEventListener("click", async function(event) {
     }
 
     // ...
-    //window.location.href = "dashboard2.html";
+    window.location.href = "../calculadora";
 
   }).catch((error) => {
     // Handle Errors here.
