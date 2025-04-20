@@ -1,6 +1,6 @@
 :root {
-    --primary: #C792EA;
-    --secondary: #7E57C2;
+    --primary: #a78bfa;
+    --secondary: #4c1d95;
     --accent: #80DEEA;
     --accent2: #FF80AB;
     --dark: #12131A;
@@ -412,6 +412,10 @@ body {
     padding-top: 30px;
     border-top: 1px solid rgba(126, 87, 194, 0.1);
     color: var(--text-secondary);
+}
+
+.gradient-btn {
+    background: linear-gradient(135deg, #a78bfa 0%, #4c1d95 100%);
 }
 
 /* Efeito de partículas */

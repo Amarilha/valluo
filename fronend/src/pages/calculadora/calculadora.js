@@ -2,6 +2,45 @@ import { calcularEExibirResultados} from "../../services/formulas.js";
 import { initIAChat } from "../../services/valluoIA.js";
 let rowCounter = 0; 
 
+// Verifica se o usuário já usou a calculadora
+function checkUsage() {
+    const used = localStorage.getItem('calculatorUsed');
+    console.log(used)
+    if (used) {
+        // Create modal HTML
+        const modalHTML = `
+            <div id="calculator-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full glass-effect">
+                    <h3 class="text-xl font-bold text-white mb-4">Acesso Restrito</h3>
+                    <p class="text-gray-300 mb-6">Você já usou a calculadora. Faça login para continuar usando todos os recursos.</p>
+                    <div class="flex justify-end gap-4">
+                        <button onclick="document.getElementById('calculator-modal').remove()" class="px-4 py-2 text-purple-400 rounded-lg hover:text-purple-300">
+                            Fechar
+                        </button>
+                        <a href="../Auth" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                            Ir para Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Insert modal into DOM
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        
+        return false;
+    }
+    console.log(' true');
+    return true;
+}
+
+function markAsUsed() {
+    localStorage.setItem('calculatorUsed', 'true');
+    console.log('Calculadora usada');
+}
+
+
+
 	document.addEventListener("DOMContentLoaded", function () {
     console.log('DOMContentLoaded executado!');
 
@@ -125,13 +164,18 @@ let rowCounter = 0;
 });
 
 
-
-
 document.getElementById('calculateBtn').addEventListener('click', function() {
 
+    if (!checkUsage()) return;
     calcularEExibirResultados();
-
     initIAChat();
+    markAsUsed();
+    
+}
+);
+
+document.getElementById('resetBtn').addEventListener('click', function() {
+    localStorage.clear();
 });
 
 // Tornar as funções formatarMoeda e removerLinha acessíveis globalmente para manipuladores de eventos inline

@@ -2,6 +2,10 @@ document.getElementById('cta-button').addEventListener('click', function() {
     window.location.href = '../Auth';
 });
 
+document.getElementById('experimente-button').addEventListener('click', function() {
+    window.location.href = '../calculadora';
+});
+
  // Criação de partículas dinâmicas
  document.addEventListener('DOMContentLoaded', function() {
     const particlesContainer = document.getElementById('particles-js');

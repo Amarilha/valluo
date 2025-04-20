@@ -18,3 +18,18 @@ body { font-family: 'Inter', sans-serif; background-color: #121212; }
     0%, 100% { opacity: 0.8; }
     50% { opacity: 1; }
 }
+
+/* Modal Styles */
+#calculator-modal .glass-effect {
+    background: rgba(30, 31, 41, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+#calculator-modal {
+    transition: opacity 0.3s ease;
+}
+
+#calculator-modal button, #calculator-modal a {
+    transition: all 0.2s ease;
+}
