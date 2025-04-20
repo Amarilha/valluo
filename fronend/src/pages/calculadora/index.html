@@ -6,29 +6,29 @@
     <title>Valluo - Calculadora de Precificação</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/fronend/src/styles/calculadora.css">
+    <link rel="stylesheet" href="calculadora.css">
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-900">
     <div class="w-full max-w-md p-6 md:p-8 rounded-xl glass-effect shadow-lg">
         <div class="flex justify-center mb-6">
-            <img src="https://amarilha.github.io/valluo/fronend/public/logo01.svg" alt="Logo Valluo" width="80" height="80" class="animate-pulse">
+            <img src="../../assets/images/logo01.svg" alt="Logo Valluo" width="80" height="80" class="animate-pulse">
         </div>
         <h1 class="text-2xl font-bold text-white text-center mb-6">Calculadora de Precificação</h1>
         <form class="space-y-6">
             <!-- Tipo de Empresa -->
-            <div>
-                <label class="block text-gray-300 font-medium mb-2">Tipo de Empresa <i class="fas fa-question-circle text-gray-500 cursor-pointer hover:text-purple-300"></i></label>
-                <div class="flex space-x-6">
-                    <label class="flex items-center">
-                        <input type="radio" name="impostoType" class="form-radio text-purple-400 h-4 w-4" value="MEI" checked>
-                        <span class="ml-2 text-gray-300">MEI</span>
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="impostoType" class="form-radio text-purple-400 h-4 w-4" value="ME">
-                        <span class="ml-2 text-gray-300">ME</span>
-                    </label>
-                </div>
-            </div>
+        <label class="block text-gray-300 font-medium mb-2">Tipo de Empresa</label>
+        <div class="flex flex-wrap gap-3">
+          <label
+            class="text-sm font-medium leading-normal flex items-center justify-center rounded-xl border border-[#533663] px-4 h-11 text-white has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#9c24dc] relative cursor-pointer"
+          >
+            ME
+            <input type="radio" class="invisible absolute" name="14d988b3-116f-4650-a614-ed581cda34a5" />
+          </label>
+          <label class="text-sm font-medium leading-normal flex items-center justify-center rounded-xl border border-[#533663] px-4 h-11 text-white has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#9c24dc] relative cursor-pointer">
+            MEI
+            <input type="radio" class="invisible absolute" name="14d988b3-116f-4650-a614-ed581cda34a5" />
+          </label>
+        </div>
 
             <!-- MEI Info -->
             <div id="meiInfo" class="text-gray-300 font-medium">
@@ -239,6 +239,6 @@
         <p class="text-center text-gray-400 text-sm mt-4">© 2025 Valluo. Todos os direitos reservados.</p>
     </footer>
 
-    <script type="module" src="/fronend/public/assets/js/calculadora.js" defer></script>
+    <script type="module" src="calculadora.js" defer></script>
 </body>
 </html>

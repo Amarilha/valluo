@@ -1,0 +1,60 @@
+valluo/
+├── backend/                 # API RESTful
+│   ├── src/
+│   │   ├── config/         # Configurações
+│   │   ├── controllers/    # Controladores
+│   │   ├── models/         # Modelos de dados
+│   │   ├── routes/         # Rotas da API
+│   │   ├── middleware/     # Middleware
+│   │   └── utils/          # Utilitários
+│   ├── tests/              # Testes
+│   ├── Dockerfile          # Containerização
+│   ├── docker-compose.yml  # Orquestração
+│   └── package.json        # Dependências Node.js
+│
+├── fronend/                # Frontend (site e app web)
+│   ├── src/
+│   │   ├── assets/         # Imagens, fontes, etc.
+│   │   ├── components/     # Componentes reutilizáveis
+│   │   ├── pages/          # Páginas do site e telas do app
+│   │   ├── services/       # Serviços de API
+│   │   ├── store/          # Gerenciamento de estado
+│   │   └── utils/          # Utilitários frontend
+│   ├── tests/              # Testes frontend
+│   └── public/             # Arquivos estáticos
+│
+├── docs/                   # Documentação
+│   ├── api/                # Documentação da API
+│   └── architecture/       # Documentação arquitetural
+│
+├── .gitignore             # Arquivos ignorados pelo git
+└── README.md              # Documentação do projeto
+
+Características importantes desta estrutura:
+
+Backend:
+API RESTful com separação clara de responsabilidades
+Suporte para autenticação e autorização
+Middleware para tratamento de erros e logs
+Configuração para diferentes ambientes (dev, staging, prod)
+Frontend:
+Componentes reutilizáveis
+Páginas separadas para site e app web
+Serviços para comunicação com a API
+Gerenciamento de estado centralizado
+Infraestrutura:
+Suporte para containerização com Docker
+Orquestração com docker-compose
+Preparação para CI/CD
+A estrutura está pronta para:
+
+Escalar horizontalmente
+Implementar cache
+Usar CDN para assets
+Implementar testes automatizados
+Documentar a API
+Implementar monitoramento
+Gostaria que eu ajudasse a configurar algum arquivo específico ou criar arquivos de configuração iniciais?
+
+Feedback submitted
+Generating.

@@ -1,5 +1,5 @@
-import { getDados, calcularCF, calcularCV, valorSevico, calcularEExibirResultados} from "../../../../backend/services/formulas.js";
-import { initIAChat } from "../../../../backend/controllers/valluoIA.js";
+import { calcularEExibirResultados} from "../../services/formulas.js";
+import { initIAChat } from "../../services/valluoIA.js";
 let rowCounter = 0; 
 
 	document.addEventListener("DOMContentLoaded", function () {
