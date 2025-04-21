@@ -48,21 +48,25 @@ function markAsUsed() {
 
 
 	document.addEventListener("DOMContentLoaded", function () {
-
     // Função para alternar a visibilidade das informações de imposto (MEI vs ME)
     function toggleImposto() {
         const meiInfo = document.getElementById('meiInfo');
         const meInfo = document.getElementById('meInfo');
-        const selectedType = document.querySelector('input[name="impostoType"]:checked')?.value; // Use optional chaining
+        const meiRadio = document.querySelector('input[name="impostoType"]:checked');
 
-        if (selectedType === 'MEI') {
-            meiInfo?.classList.remove('hidden'); // Use optional chaining
-            meInfo?.classList.add('hidden'); // Use optional chaining
-        } else {
-            meiInfo?.classList.add('hidden'); // Use optional chaining
-            meInfo?.classList.remove('hidden'); // Use optional chaining
+        if (meiRadio) {
+            meiInfo.style.display = meiRadio.value === 'mei' ? 'block' : 'none';
+            meInfo.style.display = meiRadio.value === 'mei' ? 'none' : 'block';
         }
     }
+
+    // Chama a função inicialmente
+    toggleImposto();
+
+    // Adiciona evento para quando o usuário mudar a seleção
+    document.querySelectorAll('input[name="impostoType"]').forEach(radio => {
+        radio.addEventListener('change', toggleImposto);
+    });
 
     // Função para alternar os campos de tipo de serviço (Geral vs Desenvolvedor)
     function toggleServiceType() {
