@@ -1,7 +1,8 @@
 import { calcularEExibirResultados} from "../../services/formulas.js";
 import { initIAChat } from "../../services/valluoIA.js";
-import {stateAuth,getUser,stateSignOut} from "../../services/estadoAuth.js";
+import {stateAuth,getUser,stateSignOut,perfil} from "../../services/estadoAuth.js";
 let rowCounter = 0; 
+
 
 // Verifica se o usuário já usou a calculadora
 async function checkUsage() {
@@ -34,18 +35,17 @@ async function checkUsage() {
         return false;
     }
 
-    
+    perfil(uid);
     // Return true if user is authenticated or hasn't used calculator yet
     return true;
 }
-checkUsage()
+
+checkUsage();
 
 function markAsUsed() {
     localStorage.setItem('calculatorUsed', 'true');
     console.log('Calculadora usada');
 }
-
-
 
 	document.addEventListener("DOMContentLoaded", function () {
     // Função para alternar a visibilidade das informações de imposto (MEI vs ME)
@@ -172,7 +172,6 @@ function markAsUsed() {
 
 });
 
-
 document.getElementById('calculateBtn').addEventListener('click', async function() {
 
     if (!await checkUsage()) {
@@ -185,11 +184,6 @@ document.getElementById('calculateBtn').addEventListener('click', async function
     markAsUsed();
 });
 
-document.getElementById('resetBtn').addEventListener('click', function() {
-    localStorage.clear();
-    stateSignOut();
-    
-});
 
 // Tornar as funções formatarMoeda e removerLinha acessíveis globalmente para manipuladores de eventos inline
 window.formatarMoeda = function(input) {
