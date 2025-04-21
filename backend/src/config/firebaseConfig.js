@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword,createUserWithEmailAndPassword,signInWithPopup, GoogleAuthProvider, OAuthProvider } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword,createUserWithEmailAndPassword,signInWithPopup, GoogleAuthProvider, OAuthProvider,signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, query, where, deleteDoc,collection, getDocs,addDoc } from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js';
 const firebaseConfig = {
     apiKey: "AIzaSyCwVKAi3b6Z4JIbR_G7ensn9EFDv141KX4",
@@ -21,4 +21,4 @@ const providerMicrosoft = new OAuthProvider('microsoft.com')
 const db = getFirestore(app);
 
 
-export { app, auth,db,signInWithEmailAndPassword,createUserWithEmailAndPassword,GoogleAuthProvider,provider,signInWithPopup,providerMicrosoft,OAuthProvider, getFirestore, doc, setDoc, getDoc, query, where, deleteDoc,collection, getDocs, addDoc};
+export { app, auth,db,signOut,signInWithEmailAndPassword,createUserWithEmailAndPassword,GoogleAuthProvider,provider,signInWithPopup,providerMicrosoft,OAuthProvider, getFirestore, doc, setDoc, getDoc, query, where, deleteDoc,collection, getDocs, addDoc};

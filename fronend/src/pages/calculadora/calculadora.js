@@ -1,6 +1,6 @@
 import { calcularEExibirResultados} from "../../services/formulas.js";
 import { initIAChat } from "../../services/valluoIA.js";
-import {stateAuth,getUser} from "../../services/estadoAuth.js";
+import {stateAuth,getUser,stateSignOut} from "../../services/estadoAuth.js";
 let rowCounter = 0; 
 
 // Verifica se o usuário já usou a calculadora
@@ -39,6 +39,7 @@ async function checkUsage() {
     return true;
 }
 checkUsage()
+
 function markAsUsed() {
     localStorage.setItem('calculatorUsed', 'true');
     console.log('Calculadora usada');
@@ -47,7 +48,6 @@ function markAsUsed() {
 
 
 	document.addEventListener("DOMContentLoaded", function () {
-    console.log('DOMContentLoaded executado!');
 
     // Função para alternar a visibilidade das informações de imposto (MEI vs ME)
     function toggleImposto() {
@@ -169,18 +169,22 @@ function markAsUsed() {
 });
 
 
-document.getElementById('calculateBtn').addEventListener('click', function() {
+document.getElementById('calculateBtn').addEventListener('click', async function() {
 
-    if (!checkUsage()) return;
+    if (!await checkUsage()) {
+        return; // Sai da função sem executar nada mais
+    }
+    
+    // Se chegou aqui, checkUsage() retornou true
     calcularEExibirResultados();
     initIAChat();
     markAsUsed();
-    
-}
-);
+});
 
 document.getElementById('resetBtn').addEventListener('click', function() {
     localStorage.clear();
+    stateSignOut();
+    
 });
 
 // Tornar as funções formatarMoeda e removerLinha acessíveis globalmente para manipuladores de eventos inline

@@ -1,6 +1,6 @@
 import {onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js"; 
-import { auth,db } from "../../../backend/src/config/firebaseConfig.js"
+import { auth,db,signOut } from "../../../backend/src/config/firebaseConfig.js"
 
 
 export function stateAuth() {
@@ -41,4 +41,16 @@ export async function getUser(token) {
     }
 }
 
+export async function stateSignOut() {
+    signOut(auth)
+    .then(() => {
+      // Logout bem-sucedido
+      console.log("Usuário deslogado com sucesso");
+      // Redirecionar ou atualizar a UI conforme necessário
+    })
+    .catch((error) => {
+      // Erro ao deslogar
+      console.error("Erro ao deslogar:", error);
+    });
+};
 
