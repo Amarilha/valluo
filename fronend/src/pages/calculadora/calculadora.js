@@ -180,7 +180,7 @@ document.getElementById('calculateBtn').addEventListener('click', async function
     
     // Se chegou aqui, checkUsage() retornou true
     calcularEExibirResultados();
-    exibirGraficos();
+    //exibirGraficos();
     initIAChat();
     markAsUsed();
 });
