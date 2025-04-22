@@ -365,3 +365,319 @@ export function exibirResultados(ph, valorServico, custosFixos, custosVariaveis,
 </div>
     `;
 }
+
+export function exibirGraficos(ph, valorServico, custosFixos, custosVariaveis, taxas, horasProjeto, diasUteis, horasDia) {
+    // Funções auxiliares (mantidas do código original)
+    const formatarMoeda = (valor) => {
+        if (!valor) return "0,00";
+        const numero = typeof valor === 'string' 
+            ? parseFloat(valor.replace(/\./g, '').replace(',', '.')) 
+            : Number(valor);
+        if (isNaN(numero)) return "0,00";
+        return numero.toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    };
+
+    const somarValores = (obj) => {
+        if (!obj || typeof obj !== 'object') return 0;
+        return Object.values(obj).reduce((total, valor) => {
+            if (!valor) return total;
+            const num = typeof valor === 'string'
+                ? parseFloat(valor.replace(/\./g, '').replace(',', '.'))
+                : Number(valor);
+            return total + (isNaN(num) ? 0 : num);
+        }, 0);
+    };
+
+    // Cálculos (mantidos do código original)
+    const horasMes = diasUteis * horasDia || 0;
+    const totalCustosFixosMensais = somarValores(custosFixos);
+    const totalCustosVariaveis = somarValores(custosVariaveis);
+    const totalTaxas = totalCustosVariaveis*(somarValores(taxas) / 100);
+    const custoFixoPorHora = totalCustosFixosMensais / horasMes;
+    const custoTotalProjeto = totalCustosVariaveis + (horasProjeto * custoFixoPorHora);
+    const precoMinimo = custoTotalProjeto;
+    const margemMinima = 10;
+    const margemIndicada = Math.min(
+        ((precoMinimo * 1.2 * horasMes) - totalCustosFixosMensais) / (precoMinimo * 1.2) * 100,
+        ((precoMinimo * 1.2) - totalCustosVariaveis) / (precoMinimo * 1.2) * 100,
+        25
+    );
+    const margemMaxima = Math.min(
+        ((valorServico * horasMes) - totalCustosFixosMensais) / valorServico * 100,
+        (valorServico - totalCustosVariaveis) / valorServico * 100
+    );
+    const precoComMargemMinima = precoMinimo * (1 + margemMinima/100);
+    const precoComMargemMaxima = precoMinimo * (1 + margemMaxima/100);
+    const precoComMargemIndicada = precoMinimo * (1 + margemIndicada/100);
+    const custosFixosProporcionais = (totalCustosFixosMensais / horasMes) * horasProjeto;
+    const custosTotais = totalCustosVariaveis + custosFixosProporcionais + totalTaxas;
+    let margemLucro = valorServico > 0 ? (valorServico - custosTotais) / valorServico * 100 : 0;
+    
+    if (margemLucro > margemMaxima) {
+        valorServico = custosTotais / (1 - margemMaxima/100);
+        margemLucro = margemMaxima;
+    }
+    
+    const lucro = valorServico - custosTotais;
+
+    // Criar container para os gráficos
+    const graphDiv = document.createElement('div');
+    graphDiv.id = 'graph-results';
+    graphDiv.className = 'bg-gray-800 p-6 rounded-xl border border-gray-700 glass-effect';
+    graphDiv.innerHTML = `
+        <h3 class="font-bold text-lg text-purple-300 mb-6">VISUALIZAÇÃO GRÁFICA DOS RESULTADOS</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                <h4 class="font-semibold text-purple-300 mb-4">Distribuição de Custos</h4>
+                <canvas id="costDistributionChart"></canvas>
+            </div>
+            
+            <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                <h4 class="font-semibold text-purple-300 mb-4">Comparação de Margens</h4>
+                <canvas id="marginComparisonChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                <h4 class="font-semibold text-purple-300 mb-4">Composição do Preço</h4>
+                <canvas id="priceCompositionChart"></canvas>
+            </div>
+            
+            <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                <h4 class="font-semibold text-purple-300 mb-4">Análise de Lucratividade</h4>
+                <canvas id="profitabilityChart"></canvas>
+            </div>
+        </div>
+    `;
+
+    // Adicionar ao DOM (substituir ou adicionar ao resultado existente)
+    const existingResult = document.getElementById('result');
+    if (existingResult) {
+        existingResult.appendChild(graphDiv);
+    } else {
+        document.body.appendChild(graphDiv);
+    }
+
+    // Inicializar gráficos após o DOM estar pronto
+    setTimeout(() => {
+        // 1. Gráfico de Distribuição de Custos
+        const costCtx = document.getElementById('costDistributionChart').getContext('2d');
+        new Chart(costCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Custos Variáveis', 'Custos Fixos Proporcionais', 'Taxas e Impostos'],
+                datasets: [{
+                    data: [totalCustosVariaveis, custosFixosProporcionais, totalTaxas],
+                    backgroundColor: [
+                        'rgba(192, 132, 252, 0.7)',
+                        'rgba(167, 139, 250, 0.7)',
+                        'rgba(139, 92, 246, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(192, 132, 252, 1)',
+                        'rgba(167, 139, 250, 1)',
+                        'rgba(139, 92, 246, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: R$ ${formatarMoeda(context.raw)}`;
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#E5E7EB'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. Gráfico de Comparação de Margens
+        const marginCtx = document.getElementById('marginComparisonChart').getContext('2d');
+        new Chart(marginCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mínima (10%)', `Indicada (${margemIndicada.toFixed(1)}%)`, `Máxima (${margemMaxima.toFixed(1)}%)`],
+                datasets: [{
+                    label: 'Valor do Projeto (R$)',
+                    data: [precoComMargemMinima, precoComMargemIndicada, precoComMargemMaxima],
+                    backgroundColor: 'rgba(167, 139, 250, 0.7)',
+                    borderColor: 'rgba(139, 92, 246, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Lucro (R$)',
+                    data: [
+                        precoComMargemMinima - custosTotais,
+                        precoComMargemIndicada - custosTotais,
+                        precoComMargemMaxima - custosTotais
+                    ],
+                    backgroundColor: 'rgba(74, 222, 128, 0.7)',
+                    borderColor: 'rgba(22, 163, 74, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#E5E7EB',
+                            callback: function(value) {
+                                return 'R$ ' + formatarMoeda(value);
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(55, 65, 81, 0.5)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#E5E7EB'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: R$ ${formatarMoeda(context.raw)}`;
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#E5E7EB'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 3. Gráfico de Composição do Preço
+        const priceCtx = document.getElementById('priceCompositionChart').getContext('2d');
+        new Chart(priceCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Custos', 'Lucro'],
+                datasets: [{
+                    data: [custosTotais, lucro],
+                    backgroundColor: [
+                        'rgba(139, 92, 246, 0.7)',
+                        'rgba(74, 222, 128, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(139, 92, 246, 1)',
+                        'rgba(22, 163, 74, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label;
+                                const value = context.raw;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: R$ ${formatarMoeda(value)} (${percentage}%)`;
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#E5E7EB'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 4. Gráfico de Análise de Lucratividade
+        const profitCtx = document.getElementById('profitabilityChart').getContext('2d');
+        new Chart(profitCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Margem Mínima', 'Margem Indicada', 'Margem Máxima', 'Custo por Hora', 'Valor por Hora'],
+                datasets: [{
+                    label: 'Análise de Lucratividade',
+                    data: [
+                        margemMinima,
+                        margemIndicada,
+                        margemMaxima,
+                        custoFixoPorHora,
+                        valorServico / horasProjeto
+                    ],
+                    backgroundColor: 'rgba(167, 139, 250, 0.2)',
+                    borderColor: 'rgba(167, 139, 250, 1)',
+                    pointBackgroundColor: 'rgba(167, 139, 250, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(167, 139, 250, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    r: {
+                        angleLines: {
+                            color: 'rgba(55, 65, 81, 0.5)'
+                        },
+                        grid: {
+                            color: 'rgba(55, 65, 81, 0.5)'
+                        },
+                        pointLabels: {
+                            color: '#E5E7EB'
+                        },
+                        ticks: {
+                            color: '#E5E7EB',
+                            backdropColor: 'rgba(31, 41, 55, 0.8)',
+                            callback: function(value) {
+                                if (value < 10) return value + '%';
+                                if (value < 100) return 'R$ ' + formatarMoeda(value);
+                                return value;
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.dataset.label || '';
+                                const value = context.raw;
+                                if (context.dataIndex < 3) {
+                                    return `${label}: ${value.toFixed(1)}%`;
+                                } else {
+                                    return `${label}: R$ ${formatarMoeda(value)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }, 100);
+}

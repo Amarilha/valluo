@@ -1,4 +1,4 @@
-import { calcularEExibirResultados} from "../../services/formulas.js";
+import { calcularEExibirResultados, exibirGraficos} from "../../services/formulas.js";
 import { initIAChat } from "../../services/valluoIA.js";
 import {stateAuth,getUser,stateSignOut,perfil} from "../../services/estadoAuth.js";
 let rowCounter = 0; 
@@ -180,6 +180,7 @@ document.getElementById('calculateBtn').addEventListener('click', async function
     
     // Se chegou aqui, checkUsage() retornou true
     calcularEExibirResultados();
+    exibirGraficos();
     initIAChat();
     markAsUsed();
 });
