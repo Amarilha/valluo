@@ -49,7 +49,7 @@ googleButton.addEventListener("click", async function(event) {
     }
 
     // ...
-    window.location.href = "../calculadora";
+    window.location.href = "/fronend/src/pages/Calculadora";
 
   }).catch((error) => {
     // Handle Errors here.
