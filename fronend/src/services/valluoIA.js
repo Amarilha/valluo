@@ -100,7 +100,7 @@ function createChatUI(dicasIniciais = "") {
     return `
         <div id="ia-chat" class="mt-6 p-6 rounded-xl glass-effect shadow-lg">
             <div class="flex items-center gap-3 mb-4">
-                <img src="../assets/images/sharedIA.png" alt="Valluo IA" class="w-8 h-8">
+                <img src="/fronend/src/assets/images/sharedIA.png" alt="Valluo IA" class="w-8 h-8">
                 <h3 class="font-bold text-purple-300">Consultoria Valluo IA</h3>
             </div>
 
