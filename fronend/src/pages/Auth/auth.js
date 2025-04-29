@@ -16,11 +16,11 @@ document.getElementById('show-login').addEventListener('click', function(e) {
 
  // Script para redirecionar ao clicar no logo
 document.getElementById('valluo-logo').addEventListener('click', function() {
-    window.location.href = '../home';
+    window.location.href = '../Home';
 });
 
 document.getElementById('valluo-logo-signup').addEventListener('click', function() {
-    window.location.href = '../home';
+    window.location.href = '../Home';
 });
 
 // Google
@@ -49,7 +49,7 @@ googleButton.addEventListener("click", async function(event) {
     }
 
     // ...
-    window.location.href = "/fronend/src/pages/Calculadora";
+    window.location.href = "../calculadora";
 
   }).catch((error) => {
     // Handle Errors here.
