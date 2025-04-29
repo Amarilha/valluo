@@ -1,4 +1,4 @@
-import { getDados } from "../formulas.js";
+import { getDados } from "../services/formulas.js";
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
 const GEMINI_API_KEY = "AIzaSyB6BT3IMAA7m0mz_i7dWDX-ns88u83hbBY";
@@ -81,10 +81,10 @@ async function analisarEGerarDicas() {
     3. Use apenas <ol> ou <ul> para listas
     4. Estruture assim:
     <div class="grid grid-cols-1 gap-4">
-      <div class="bg-white p-4 rounded-lg shadow">
-        <p class="font-bold text-purple-700">1. Título da Dica</p>
-        <p>Explicação detalhada...</p>
-        <ol class="list-decimal pl-5 mt-2">
+      <div class="p-4 rounded-lg bg-gray-800 border border-gray-700 text-white">
+        <p class="font-bold text-purple-300">1. Título da Dica</p>
+        <p class="text-gray-300">Explicação detalhada...</p>
+        <ol class="list-decimal pl-5 mt-2 text-gray-300">
           <li>Item específico</li>
         </ol>
       </div>
@@ -98,25 +98,25 @@ async function analisarEGerarDicas() {
 
 function createChatUI(dicasIniciais = "") {
     return `
-        <div id="ia-chat" class="mt-6 bg-white p-4 rounded-lg shadow-md border border-purple-100">
-            <div class="flex items-center gap-2 mb-4">
+        <div id="ia-chat" class="mt-6 p-6 rounded-xl glass-effect shadow-lg">
+            <div class="flex items-center gap-3 mb-4">
                 <img src="https://amarilha.github.io/valluo/fronend/public/sharedIA.png" alt="Valluo IA" class="w-8 h-8">
-                <h3 class="font-bold text-purple-700">Consultoria Valluo IA</h3>
+                <h3 class="font-bold text-purple-300">Consultoria Valluo IA</h3>
             </div>
 
             ${dicasIniciais ? `
-                <div class="mb-6 p-4 bg-purple-50 rounded-lg">
-                    <h4 class="font-semibold text-purple-700 mb-2">Análise e Recomendações:</h4>
+                <div class="mb-6 p-4 rounded-lg bg-gray-800 border border-gray-700">
+                    <h4 class="font-semibold text-purple-300 mb-2">Análise e Recomendações:</h4>
                     ${dicasIniciais}
                 </div>
             ` : ''}
 
-            <div id="ia-messages" class="mb-4 max-h-60 overflow-y-auto space-y-2"></div>
-            <div class="flex gap-2">
+            <div id="ia-messages"  class="mb-4 max-h-60 overflow-y-auto space-y-3 pr-2" style="scrollbar-width: none; -ms-overflow-style: none;"></div>
+            <div class="flex gap-3">
                 <input id="ia-input" type="text"
                     placeholder="Tire suas dúvidas sobre as recomendações..."
-                    class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                <button id="ia-send" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition">
+                    class="flex-1 p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-300 transition">
+                <button id="ia-send" class="gradient-btn text-white px-4 py-2 rounded-lg hover-scale">
                     Enviar
                 </button>
             </div>
@@ -140,10 +140,14 @@ async function initIAChat() {
             if (!message) return;
 
             const messagesDiv = document.getElementById('ia-messages');
-            messagesDiv.innerHTML += `<div class="text-right"><p class="inline-block bg-purple-100 rounded-lg px-3 py-1">${message}</p></div>`;
+            messagesDiv.innerHTML += `<div class="text-right"><p class="inline-block bg-purple-900 rounded-lg px-3 py-2 text-white">${message}</p></div>`;
 
             input.value = '';
-            messagesDiv.innerHTML += `<div class="text-left"><p class="inline-block bg-gray-100 rounded-lg px-3 py-1">Analisando sua dúvida...</p></div>`;
+            const iaPlaceholderId = `ia-response-${Date.now()}`;
+            messagesDiv.innerHTML += `
+              <div class="text-left" id="${iaPlaceholderId}">
+                <p class="inline-block bg-gray-800 rounded-lg px-3 py-2 text-gray-300">Analisando sua dúvida...</p>
+              </div>`;
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
             const dados = getDados();
@@ -153,11 +157,11 @@ async function initIAChat() {
                 1. Formate SEMPRE em HTML com classes Tailwind
                 2. Proibido usar *, -, → ou qualquer marcador não HTML
                 3. Use esta estrutura:
-                <div class="bg-white p-4 rounded-lg shadow">
-                  <p class="font-bold text-purple-700 mb-2">Resposta</p>
+                <div class="p-4 rounded-lg bg-gray-800 border border-gray-700 text-white">
+                  <p class="font-bold text-purple-300 mb-2">Resposta</p>
                   <div class="space-y-2">
-                    <p>Texto principal...</p>
-                    <ul class="list-disc pl-5">
+                    <p class="text-gray-300">Texto principal...</p>
+                    <ul class="list-disc pl-5 text-gray-300">
                       <li>Item de lista</li>
                     </ul>
                   </div>
@@ -169,7 +173,20 @@ async function initIAChat() {
                 6. Nunca mostre códigos ou a palavra "HTML"`
             );
 
-            messagesDiv.lastElementChild.innerHTML = response;
+            // Se a resposta já está formatada corretamente em <div>, mantenha
+            const isHTML = /<[^>]+>/.test(response.trim());
+
+            if (isHTML) {
+                messagesDiv.lastElementChild.innerHTML = response;
+            } else {
+                messagesDiv.lastElementChild.innerHTML = `
+                    <div class="text-left">
+                        <p class="inline-block bg-gray-800 rounded-lg px-3 py-2 text-gray-300">${response}</p>
+                    </div>
+                `;
+            }
+            
+
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
     }

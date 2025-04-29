@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valluo - Calculadora de Precificação</title>
+    <!-- Favicon (aparece na aba do navegador) -->
+    <link rel="icon" href="../../assets/images/sharedIA.png" type="image/png">
+    
+    <!-- Para Apple/Safari -->
+    <link rel="apple-touch-icon" href="../../assets/images/sharedIA.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="calculadora.css">
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900">
+    <div class="w-full max-w-md p-6 md:p-8 rounded-xl glass-effect shadow-lg">
+        <div id="profile-section" class="flex justify-between items-center gap-2">
+        </div>
+        <div class="flex justify-center mb-6">
+            <div class="flex justify-center mb-6">
+                <div class="flex items-center gap-4">
+                    <a href="../Home/index.html">
+                        <img src="../../assets/images/logo01.svg" alt="Logo Valluo" width="80" height="80" class="animate-pulse">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <h1 class="text-2xl font-bold text-white text-center mb-6">Calculadora de Precificação</h1>
+        <form class="space-y-6">
+            <!-- Tipo de Empresa -->
+        <label class="block text-gray-300 font-medium mb-2">Tipo de Empresa</label>
+        <div class="flex flex-wrap gap-3">
+            <!-- MEI -->
+            <label class="text-sm font-medium leading-normal flex items-center justify-center rounded-xl border border-[#533663] px-4 h-11 text-white has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#9c24dc] relative cursor-pointer" >
+                MEI
+                <input type="radio" class="invisible absolute" checked name="impostoType" value="mei" />
+            </label>
+            <!-- ME -->
+            <label class="text-sm font-medium leading-normal flex items-center justify-center rounded-xl border border-[#533663] px-4 h-11 text-white has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#9c24dc] relative cursor-pointer">
+                ME
+            <input type="radio" class="invisible absolute" name="impostoType" value="me" />
+          </label>
+        </div>
+
+            <!-- MEI Info -->
+            <div id="meiInfo" class="text-gray-300 font-medium">
+                <p>MEI: R$ 80,90</p>
+            </div>
+
+            <!-- Renda Bruta (ME) -->
+            <div id="meInfo" class="hidden">
+                <label class="block text-gray-300 font-medium mb-2">Renda Bruta</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>
+                    <input type="number" min="1" oninput="this.value = this.value < 0 ? 0 : this.value" id="grossIncome" class="w-full pl-10 p-3 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" placeholder="Digite a renda bruta">
+                </div>
+            </div>
+
+            <!-- Serviço -->
+            <div>
+                <label class="block text-gray-300 font-medium mb-2">Serviço</label>
+                <select name="serviceType" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                    <option value="geral">Geral</option>
+                    <option value="dev">Desenvolvedor de SW</option>
+                </select>
+            </div>
+
+            <!-- Geral Fields -->
+            <div id="geral-fields" class="space-y-4">
+                <!-- Custo Fixo Mensal -->
+                <div id="CF">
+                    <label class="block text-gray-300 font-medium mb-2">Custos Fixos Mensais</label>
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-2">
+                            <input type="text" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" value="Aluguel">
+                            <div class="relative w-1/2">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>
+                                <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="w-full pl-10 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                            </div>
+                            <button type="button" onclick="removerLinha(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" value="Equipamentos">
+                            <div class="relative w-1/2">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>
+                                <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="w-full pl-10 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                            </div>
+                            <button type="button" onclick="removerLinha(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" value="Software">
+                            <div class="relative w-1/2">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>
+                                <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="w-full pl-10 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                            </div>
+                            <button type="button" onclick="removerLinha(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="flex items-center space-x-2 ">
+                            <input type="text" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" value="Outros gastos fixos">
+                            <div class="relative w-1/2">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>
+                                <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="w-full pl-10 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                            </div>
+                            <button type="button" onclick="removerLinha(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div id="custos-fixos-container"></div>
+                    </div>
+                    
+                    <button type="button" class="add-custo-btn mt-2 px-3 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-700" data-container="custos-fixos-container" data-placeholder="Novo Custo Fixo"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <!-- Custo Variável por Serviço -->
+                <div id="CV">
+                    <label class="block text-gray-300 font-medium mb-2">Custos Variáveis</label>
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-2">
+                            <input type="text" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" value="Gasolina/transporte">
+                            <div class="relative w-1/2">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>
+                                <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="w-full pl-10 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                            </div>
+                            <button type="button" onclick="removerLinha(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" value="Materiais">
+                            <div class="relative w-1/2">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>
+                                <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="w-full pl-10 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                            </div>
+                            <button type="button" onclick="removerLinha(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" value="Outros gastos variáveis">
+                            <div class="relative w-1/2">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>
+                                <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="w-full pl-10 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                            </div>
+                            <button type="button" onclick="removerLinha(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div id="custos-variaveis-container"></div>
+                    </div>
+                    
+                    <button type="button" class="add-custo-btn mt-2 px-3 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-700" data-container="custos-variaveis-container" data-placeholder="Novo Custo Variável"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <!-- Impostos e Taxas -->
+                <div id="taxas">
+                    <label class="block text-gray-300 font-medium mb-2">Impostos e Taxas</label>
+                    <div class="flex items-center space-x-2 mb-2">
+                        <input type="text" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" value="Impostos/Taxa" id="nome-row-0">
+                        <div class="relative w-1/2">
+                            <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="w-full p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" id="valor-row-0">
+                            <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">%</span>
+                        </div>
+                        <button type="button" onclick="removerLinha(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div id="impostos-container"></div>
+                    <button type="button" class="add-custo-btn mt-2 px-3 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-700" data-container="impostos-container" data-placeholder="Novo Imposto/Taxa" data-ispercentage="true"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <!-- Remuneração por Hora -->
+                <div id="Ph">
+                    <label class="block text-gray-300 font-medium mb-2">Remuneração por Hora</label>
+                    <div class="flex space-x-4 mb-3">
+                        <!--
+                        <label class="flex items-center">
+                            <input type="radio" name="remunerationType" value="direct" class="form-radio text-purple-400 h-4 w-4">
+                            <span class="ml-2 text-gray-300">Sei o valor por hora</span>
+                        </label>
+                        -->
+                        <label class="flex items-center">
+                            <input type="radio" name="remunerationType" value="calculate" class="form-radio text-purple-400 h-4 w-4" checked>
+                            <span class="ml-2 text-gray-300">Não sei o valor por hora</span>
+                        </label>
+                    </div>
+                    
+                    <div id="directInput" class="flex items-center space-x-2 hidden">
+                        <div class="relative w-1/2">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>
+                            <input type="number" min="1" oninput="this.value = this.value < 0 ? 0 : this.value" class="w-full pl-10 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" placeholder="Valor por hora">
+                        </div>
+                        <div class="w-1/2">
+                            <select class="w-full p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                                <option>Horas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="calculateSection">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <label class="w-1/2 text-gray-300">Remuneração Mensal Desejada</label>
+                            <div class="relative w-1/2">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">R$</span>
+                                <input type="text" oninput="formatarMoeda(this)" placeholder="0,00" class="w-full pl-10 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2 mb-2">
+                            <label class="w-1/2 text-gray-300">Dias Úteis no Mês</label>
+                            <input type="number" min="1" max="31" placeholder="0" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label class="w-1/2 text-gray-300">Horas Produtivas por Dia</label>
+                            <input type="number" min="1" max="24" placeholder="0" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Valor do Serviço/Projeto -->
+                <div id="valor-projeto">
+                    <label class="block text-gray-300 font-medium mb-2">Horas Estimadas do Serviço/Projeto</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" min="1" oninput="this.value = this.value < 0 ? 0 : this.value" class="w-1/2 p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus" placeholder="Horas estimadas">
+                        <div class="w-1/2">
+                            <select class="w-full p-2 rounded-lg bg-gray-800 border border-gray-700 text-white input-focus">
+                                <option>Horas</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="flex items-center justify-between">
+                <button type="button" id="calculateBtn" class="gradient-btn text-white font-semibold py-2 px-6 rounded-lg hover-scale">CALCULAR</button>
+                <button type="reset" id="resetBtn" class="text-purple-400 font-semibold py-2 px-6 rounded-lg hover:text-purple-300">LIMPAR</button>
+            </div>
+
+            <!-- Importar Arquivo -->
+            <div>
+                <label class="block text-gray-300 font-medium mb-2">Importar Arquivo (Plano PRO)</label>
+                <div class="relative border-2 border-dashed border-gray-700 rounded-lg p-6 text-center glass-effect">
+                    <i class="fas fa-file-upload fa-2x text-gray-400 mb-2"></i>
+                    <p class="text-gray-300">Arraste e solte o arquivo aqui ou</p>
+                    <input type="file" class="w-full mt-2 text-gray-300 rounded-lg" disabled>
+                    <span class="absolute top-0 right-0 bg-purple-600 text-white text-xs font-bold py-1 px-2 rounded-bl-lg">PRO</span>
+                </div>
+            </div>
+
+            <!-- Resultado -->
+            <div id="result" class="text-center text-white font-semibold mt-4"></div>
+        </form>
+    </div>
+
+    <footer class="mt-8 w-full">
+        <div class="flex justify-center space-x-6">
+            <a href="#" class="text-gray-400 hover:text-purple-400"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="#" class="text-gray-400 hover:text-purple-400"><i class="fa-brands fa-square-x-twitter fa-2x"></i></a>
+            <a href="https://www.instagram.com/valluo.ofc" class="text-gray-400 hover:text-purple-400"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="https://www.linkedin.com/company/valluo/" class="text-gray-400 hover:text-purple-400"><i class="fab fa-linkedin fa-2x"></i></a>
+        </div>
+        <p class="text-center text-gray-400 text-sm mt-4">© 2025 Valluo. Todos os direitos reservados.</p>
+    </footer>
+
+    <script type="module" src="calculadora.js" defer></script>
+</body>
+</html>
